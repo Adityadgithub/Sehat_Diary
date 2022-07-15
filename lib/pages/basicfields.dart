@@ -24,9 +24,7 @@ class _BasicFieldsState extends State<BasicFields> {
             CircleAvatar(
                 backgroundColor: Colors.black,
                 radius: 40,
-                backgroundImage: AssetImage(
-                  "assets/images/profilepic.jpg",
-                )),
+                child: Icon(Icons.person,size: 40,)),
             IconButton(
               onPressed: () {
                 showDialog(
@@ -118,7 +116,7 @@ class _BasicFieldsState extends State<BasicFields> {
                 padding: const EdgeInsets.only(right: 5.0),
                 child: Icon(Icons.person),
               ),
-              labelText: "Full Name",
+              hintText: "Full Name",
               labelStyle: TextStyle(
                   fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
             ),
@@ -155,7 +153,7 @@ class _BasicFieldsState extends State<BasicFields> {
                 padding: const EdgeInsets.only(right: 5.0),
                 child: Icon(Icons.mail),
               ),
-              labelText: "Email address",
+              hintText: "Email address",
               labelStyle: TextStyle(
                   fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
             ),

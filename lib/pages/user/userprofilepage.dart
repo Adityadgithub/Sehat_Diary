@@ -9,6 +9,7 @@ import 'package:firebasetut/pages/user/userprofilefields.dart';
 import 'package:flutter/material.dart';
 
 class UserProfilePage extends StatefulWidget {
+  var FieldImage;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -17,6 +18,7 @@ class UserProfilePage extends StatefulWidget {
   var Fieldbloodgroup;
   var Fieldcontactnumber;
   UserProfilePage({
+    this.FieldImage,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -29,6 +31,7 @@ class UserProfilePage extends StatefulWidget {
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState(
+    FieldImage: FieldImage,
       Fieldname: Fieldname,
       Fieldemail: Fieldemail,
       Fieldpassword: Fieldpassword,
@@ -39,6 +42,7 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
+  var FieldImage;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -47,6 +51,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   var Fieldbloodgroup;
   var Fieldcontactnumber;
   _UserProfilePageState({
+    this.FieldImage,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -87,7 +92,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return SafeArea(
       child: Scaffold(
         drawerScrimColor: Colors.black,
-        drawer: Drawerwidgets(drawerusername: Fieldname),
+        drawer: Drawerwidgets(drawerusername: Fieldname,drawerimage: FieldImage),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.blue),
           centerTitle: true,
@@ -113,6 +118,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return UserProfileFields(
+                  FieldImage: FieldImage,
           Fieldname: Fieldname,
       Fieldemail: Fieldemail,
       Fieldpassword: Fieldpassword,

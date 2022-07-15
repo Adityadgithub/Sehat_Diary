@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserProfileFields extends StatefulWidget {
+  var FieldImage;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -19,6 +20,7 @@ class UserProfileFields extends StatefulWidget {
   var Fieldcontactnumber;
 
   UserProfileFields({
+    this.FieldImage,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -29,6 +31,7 @@ class UserProfileFields extends StatefulWidget {
   });
   @override
   State<UserProfileFields> createState() => _UserProfileFieldsState(
+      FieldImage: FieldImage,
       Fieldname: Fieldname,
       Fieldemail: Fieldemail,
       Fieldpassword: Fieldpassword,
@@ -39,6 +42,7 @@ class UserProfileFields extends StatefulWidget {
 }
 
 class _UserProfileFieldsState extends State<UserProfileFields> {
+  var FieldImage;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -48,6 +52,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
   var Fieldcontactnumber;
 
   _UserProfileFieldsState({
+    this.FieldImage,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -76,76 +81,8 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                     CircleAvatar(
                         backgroundColor: Colors.black,
                         radius: 40,
-                        child: Icon(Icons.person, size: 40)),
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Container(
-                            height: 50,
-                            child: AlertDialog(
-                                title: Text(
-                                  '''Select an option
-        to pick your image''',
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
-                                content: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.17,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        width: MediaQuery.of(context)
-                                            .size
-                                            .longestSide,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            getgalaryimage();
-                                          },
-                                          child: Text("Gallary"),
-                                        ),
-                                      ),
-                                      SizedBox(height: 15),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        width: MediaQuery.of(context)
-                                            .size
-                                            .longestSide,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            getcamimage();
-                                          },
-                                          child: Text("Camera"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                        );
-                      },
-                      icon: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.blueAccent,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Icon(
-                            Icons.add,
-                            size: 20,
-                          )),
-                      padding: EdgeInsetsDirectional.only(top: 60, start: 50),
-                    ),
+                        backgroundImage: NetworkImage('$FieldImage')),
+
                   ],
                 ),
                 SizedBox(height: 15),
@@ -178,7 +115,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.person),
                       ),
-                      labelText: 'Name',
+                      hintText: 'Name',
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -217,7 +154,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.mail),
                       ),
-                      labelText: "Email address",
+                      hintText: "Email address",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -231,7 +168,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-                // initialValue: Fieldcontactnumber,
+                initialValue: Fieldcontactnumber,
                 enableSuggestions: true,
                 validator: (value) {
                   return null;
@@ -256,7 +193,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                     padding: const EdgeInsets.only(right: 5.0),
                     child: Icon(Icons.local_hospital),
                   ),
-                  labelText: "Contact Number",
+                  hintText: "Contact Number",
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
@@ -292,7 +229,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                     padding: const EdgeInsets.only(right: 5.0),
                     child: Icon(Icons.stars_rounded),
                   ),
-                  labelText: "Date of Birth",
+                  hintText: "Date of Birth",
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
@@ -328,7 +265,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                     padding: const EdgeInsets.only(right: 5.0),
                     child: Icon(Icons.school),
                   ),
-                  labelText: "Gender",
+                  hintText: "Gender",
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
@@ -364,7 +301,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                     padding: const EdgeInsets.only(right: 5.0),
                     child: Icon(Icons.home),
                   ),
-                  labelText: "Blood Group",
+                  hintText: "Blood Group",
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),

@@ -14,7 +14,7 @@ class _doctorbuttonState extends State<doctorbutton> {
   Widget build(BuildContext context) {
     return TextButton(
             onPressed: () async {
-              loginas = "Doctor";
+              loginas = 'Doctor';
               await Navigator.pushNamed(context, "login");
             },
             child: Column(

@@ -1,20 +1,21 @@
 import 'dart:io';
-
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/drawerwidgets.dart';
 import 'package:firebasetut/pages/signup.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<DocumentReference<Map<String, dynamic>>>? userid;
 
 class AddMemberSignuFields extends StatefulWidget {
   const AddMemberSignuFields({Key? key}) : super(key: key);
+
   @override
   State<AddMemberSignuFields> createState() => _AddMemberSignuFieldsState();
 }
@@ -55,32 +56,40 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
   DateTime date = DateTime(2022, 12, 24);
 
   bool dateselected = false;
+  File? profilecameraimages;
+
+  var profilegallaryimages;
+
+  UploadTask? profileuploadtask;
+
+  String? profileurlDownlad;
+
+  int? profileimagedone;
+  late Timer _timer;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerScrimColor: Colors.black,
-        
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.blue),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text("Add Member",
-              style:
-                  TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-          // title: FutureBuilder(
-          //   future: getData(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.connectionState == ConnectionState.done) {
-          //       return Text("My Profile",
-          //           style: TextStyle(
-          //               color: Colors.blue, fontWeight: FontWeight.bold));
-          //     } else {
-          //       return CircularProgressIndicator();
-          //     }
-          //   },
-          // ),
-        ),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.blue),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text("Add Member",
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+        // title: FutureBuilder(
+        //   future: getData(),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.done) {
+        //       return Text("My Profile",
+        //           style: TextStyle(
+        //               color: Colors.blue, fontWeight: FontWeight.bold));
+        //     } else {
+        //       return CircularProgressIndicator();
+        //     }
+        //   },
+        // ),
+      ),
       body: SingleChildScrollView(
           child: Center(
               child: Padding(
@@ -108,14 +117,24 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                         builder: (context) => Container(
                           height: 50,
                           child: AlertDialog(
-                              title: Text(
-                                '''Select an option
-          to pick your image''',
-                                style:
-                                    TextStyle(fontSize: 15, color: Colors.grey),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Select an option",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  ),
+                                  Text(
+                                    "to pick your image",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  ),
+                                ],
                               ),
                               content: Container(
-                                height: MediaQuery.of(context).size.height * 0.17,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.17,
                                 child: Column(
                                   children: [
                                     Container(
@@ -125,11 +144,18 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(15)),
-                                      width:
-                                          MediaQuery.of(context).size.longestSide,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .longestSide,
                                       child: TextButton(
                                         onPressed: () {
-                                          getgalaryimage();
+                                          setState(() async {
+                                            setState(() {});
+                                            profileimagedone = 0;
+                                            Navigator.of(context).pop();
+                                            await profilegallaryselectFile();
+                                            profileimagedone = 1;
+                                          });
                                         },
                                         child: Text("Gallary"),
                                       ),
@@ -142,11 +168,16 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                                           ),
                                           borderRadius:
                                               BorderRadius.circular(15)),
-                                      width:
-                                          MediaQuery.of(context).size.longestSide,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .longestSide,
                                       child: TextButton(
-                                        onPressed: () {
-                                          getcamimage();
+                                        onPressed: () async {
+                                          setState(() {});
+                                          profileimagedone = 0;
+                                          Navigator.of(context).pop();
+                                          await profilecameraselectFile();
+                                          profileimagedone = 1;
                                         },
                                         child: Text("Camera"),
                                       ),
@@ -197,9 +228,10 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Icon(Icons.person),
                     ),
-                    labelText: "Full Name",
+                    hintText: "Full Name",
                     labelStyle: TextStyle(
-                        fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 111, 111, 111)),
                   ),
                   onChanged: (value) {
                     name = value;
@@ -230,7 +262,7 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.handshake),
                       ),
-                      labelText: "Relationship",
+                      hintText: "Relationship",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -287,8 +319,8 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                               )
                             : Text(
                                 '${date.year}/${date.month}/${date.day}',
-                                style:
-                                    TextStyle(color: Colors.black45, fontSize: 18),
+                                style: TextStyle(
+                                    color: Colors.black45, fontSize: 18),
                               ),
                       ],
                     )),
@@ -317,7 +349,7 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.male),
                       ),
-                      labelText: "Choose Gender",
+                      hintText: "Choose Gender",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -357,7 +389,7 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.male),
                       ),
-                      labelText: "Blood Group (optional)",
+                      hintText: "Blood Group (optional)",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -386,16 +418,19 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                           //     .createUserWithEmailAndPassword(
                           //         email: newEmail, password: newPassword)
                           //     .then((value) {
-                            final result = store.collection('User').doc(FirebaseAuth.instance.currentUser!.uid.toString()).collection('FamilyMember').add({
-                              'Name': name,
-                              'Blood Group': bloodselecteditem,
-                              'Gender': genderselecteditem,
-                              'Relationship': relationselecteditem,
-                              // 'Dob': date,
+                          final result = store
+                              .collection('User')
+                              .doc(FirebaseAuth.instance.currentUser!.uid
+                                  .toString())
+                              .collection('FamilyMember')
+                              .add({
+                            'Name': name,
+                            'Blood Group': bloodselecteditem,
+                            'Gender': genderselecteditem,
+                            'Relationship': relationselecteditem,
+                            // 'Dob': date,
                             // userid = result;
-                            })
-
-                          .then((value) =>
+                          }).then((value) =>
                                   Navigator.pushNamed(context, "Firebasecard"));
                         } on FirebaseAuthException catch (e) {
                           print(e);
@@ -451,31 +486,58 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
     });
   }
 
-  Future getgalaryimage() async {
-    try {
-      var images = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (images == null) return;
-      var ImageTemp = File(images.path as String);
+  Future profilecameraselectFile() async {
+    // final result = await FilePicker.platform.pickFiles();
+    final result = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (result == null) return;
 
-      setState(() {
-        images = ImageTemp as XFile;
-      });
-    } on PlatformException catch (e) {
-      print(e);
+    setState(() {
+      profilecameraimages = File(result.path);
+    });
+
+    await profilecamerauploadfile();
+  }
+
+  Future profilecamerauploadfile() async {
+    try {
+      final path = 'files/${profilecameraimages}';
+      final file = File(profilecameraimages!.path);
+
+      final ref = FirebaseStorage.instance.ref().child(path);
+      profileuploadtask = ref.putFile(file);
+
+      final snapshot = await profileuploadtask!.whenComplete(() {});
+      profileurlDownlad = await snapshot.ref.getDownloadURL();
+      print('Download Link: $profileurlDownlad');
+    } catch (e) {
+      print('hey the error is: $e');
     }
   }
 
-  Future getcamimage() async {
-    try {
-      var images = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (images == null) return;
-      var ImageTemp = File(images.path as String);
+  Future profilegallaryselectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
 
-      setState(() {
-        images = ImageTemp as XFile;
-      });
-    } on PlatformAdaptiveIcons catch (e) {
-      print(e);
+    setState(() {
+      profilegallaryimages = result.files.first;
+    });
+
+    await profilegallaryuploadfile();
+  }
+
+  Future profilegallaryuploadfile() async {
+    try {
+      final path = 'files/${profilegallaryimages}';
+      final file = File(profilegallaryimages!.path!);
+
+      final ref = FirebaseStorage.instance.ref().child(path);
+      profileuploadtask = ref.putFile(file);
+
+      final snapshot = await profileuploadtask!.whenComplete(() {});
+      profileurlDownlad = await snapshot.ref.getDownloadURL();
+      print('Download Link: $profileurlDownlad');
+    } catch (e) {
+      print('hey the error is: $e');
     }
   }
 }

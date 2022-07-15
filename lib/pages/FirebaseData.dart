@@ -28,6 +28,7 @@ class _FirebasecardState extends State<Firebasecard> {
           List<Widget> servicesWidget = [];
           if (loginas == 'Doctor') {
             for (var st in services) {
+              final _image = (st.data()! as Map<String, dynamic>)['Image'];
               final _name = (st.data()! as Map<String, dynamic>)['Name'];
               final _email = (st.data()! as Map<String, dynamic>)['Email'];
               final _password =
@@ -43,21 +44,24 @@ class _FirebasecardState extends State<Firebasecard> {
               final _licensenum =
                   (st.data()! as Map<String, dynamic>)['License Number'];
               universalnamefordrawer = _name;
+              print(_name);
               datas = builddoctorpage(
-                _name,
-                _email,
-                _password,
-                _hospitalname,
-                _speciality,
-                _degree,
-                _address,
-                _contactnumber,
-                _licensenum,
+                image : _image,
+                name: _name,
+                email: _email,
+                password: _password,
+                hospitalname: _hospitalname,
+                speciality: _speciality,
+                degree: _degree,
+                address: _address,
+                contactnumber: _contactnumber,
+                licensenum: _licensenum,
               );
             }
             servicesWidget.add(datas);
           } else if (loginas == 'User') {
             for (var st in services) {
+              final _image = (st.data()! as Map<String, dynamic>)['Image'];
               final _name = (st.data()! as Map<String, dynamic>)['Name'];
               final _email = (st.data()! as Map<String, dynamic>)['Email'];
               final _password =
@@ -70,6 +74,7 @@ class _FirebasecardState extends State<Firebasecard> {
                   (st.data()! as Map<String, dynamic>)['Blood Group'];
               universalnamefordrawer = _name;
               datas = builduserpage(
+                 _image,
                 _name,
                 _email,
                 _password,
@@ -88,7 +93,8 @@ class _FirebasecardState extends State<Firebasecard> {
     ));
   }
 
-  builddoctorpage(
+  builddoctorpage({
+    image,
     name,
     email,
     password,
@@ -98,8 +104,9 @@ class _FirebasecardState extends State<Firebasecard> {
     degree,
     address,
     licensenum,
-  ) {
+  }) {
     return doctorprofilepage(
+      FieldImage : image,
       FieldName: name,
       Fieldemail: email,
       Fieldpassword: password,
@@ -113,6 +120,7 @@ class _FirebasecardState extends State<Firebasecard> {
   }
 
   builduserpage(
+      image,
     name,
     email,
     password,
@@ -122,6 +130,7 @@ class _FirebasecardState extends State<Firebasecard> {
     bloodgroup,
   ) {
     return UserProfilePage(
+        FieldImage : image,
         Fieldname: name,
         Fieldemail: email,
         Fieldpassword: password,

@@ -60,7 +60,7 @@ class _DentalCareState extends State<DentalCare> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.photo),
                       ),
-                      labelText: "Add Photo",
+                      hintText: "Add Photo",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -98,7 +98,7 @@ class _DentalCareState extends State<DentalCare> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.video_call),
                       ),
-                      labelText: "Add Video",
+                      hintText: "Add Video",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),
@@ -136,7 +136,7 @@ class _DentalCareState extends State<DentalCare> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.description),
                       ),
-                      labelText: "Description",
+                      hintText: "Description",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),

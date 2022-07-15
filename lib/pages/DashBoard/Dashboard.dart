@@ -119,23 +119,56 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(height: 50),
-                            TextButton(
-                              onPressed: () {
-                              },
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage:
-                                    AssetImage("assets/images/heartrate.png"),
-                                    radius: 50,
+                            Row(           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context,"HeartRate");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                        AssetImage("assets/images/heartrate.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Heart Rate",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "Heart Rate",
-                                    style: TextStyle(color: Colors.black),
-                                  )
-                                ],
-                              ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, 'PnR');
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                        AssetImage("assets/images/PnR.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Prescription",
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                          Text(
+                                            "& Reports",
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

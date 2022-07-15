@@ -135,7 +135,7 @@ class _AddBpState extends State<AddBp> {
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Icon(Icons.featured_play_list_rounded),
                     ),
-                    labelText: "Systolic Value",
+                    hintText: "Systolic Value",
                     labelStyle: TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(255, 111, 111, 111)),
@@ -172,7 +172,7 @@ class _AddBpState extends State<AddBp> {
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Icon(Icons.featured_play_list_rounded),
                     ),
-                    labelText: "Diastolic Value",
+                    hintText: "Diastolic Value",
                     labelStyle: TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(255, 111, 111, 111)),
@@ -207,7 +207,7 @@ class _AddBpState extends State<AddBp> {
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Icon(Icons.monitor_heart_outlined),
                     ),
-                    labelText: "Pulse Count",
+                    hintText: "Pulse Count",
                     labelStyle: TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(255, 111, 111, 111)),

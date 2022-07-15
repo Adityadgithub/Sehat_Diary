@@ -51,8 +51,8 @@ class _AddMedicineState extends State<AddMedicine> {
 
   @override
   void initState() {
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      setState(() {});
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {date = DateTime.now();});
     });
     super.initState();
   }
@@ -71,7 +71,7 @@ class _AddMedicineState extends State<AddMedicine> {
             centerTitle: true,
             backgroundColor: Colors.white,
             title: Text(
-              "Add sugar Details",
+              "Add Medicine Details",
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
@@ -108,7 +108,7 @@ class _AddMedicineState extends State<AddMedicine> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Time"),
-                                Text("${date.hour}:${date.minute} AM")
+                                Text("${date.hour}:${date.minute}")
                               ],
                             )
                           ],
@@ -147,7 +147,7 @@ class _AddMedicineState extends State<AddMedicine> {
                           padding: const EdgeInsets.only(right: 5.0),
                           child: Icon(Icons.local_hospital),
                         ),
-                        labelText: "Medicine Name",
+                        hintText: "Medicine Name",
                         labelStyle: TextStyle(
                             fontSize: 20,
                             color: Color.fromARGB(255, 111, 111, 111)),
@@ -180,7 +180,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     padding: const EdgeInsets.only(right: 5.0),
                                     child: Icon(Icons.event_note_outlined),
                                   ),
-                                  labelText: "Type",
+                                  hintText: "Type",
                                   labelStyle: TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 111, 111, 111)),
@@ -231,7 +231,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                 ),
                               ),
 
-                              labelText: "Quantity",
+                              hintText: "Quantity",
                               labelStyle: TextStyle(
                                   fontSize: 20,
                                   color: Color.fromARGB(255, 111, 111, 111)),
@@ -270,7 +270,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                   ),
                                 ),
 
-                                labelText: "No. of times",
+                                hintText: "No. of times",
                                 labelStyle: TextStyle(
                                     fontSize: 15,
                                     color: Color.fromARGB(255, 111, 111, 111)),

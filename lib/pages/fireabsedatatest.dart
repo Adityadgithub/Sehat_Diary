@@ -29,7 +29,7 @@ class _FirebasecardtestState extends State<Firebasecardtest> {
             servicesWidget.add(datas);
           }
           if(nametest == null)
-            return Text("peter");
+            return Center(child: Text("Click Add (+) to add your family members."));
           return GridView.count(
             crossAxisSpacing: 15,
             mainAxisSpacing: 15,

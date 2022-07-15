@@ -39,12 +39,11 @@ class _AddWeightState extends State<AddWeight> {
 
   @override
   void initState() {
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      setState(() {});
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {date = DateTime.now();});
     });
     super.initState();
   }
-
   @override
   void dispose() {
     _timer.cancel();
@@ -59,7 +58,7 @@ class _AddWeightState extends State<AddWeight> {
               centerTitle: true,
               backgroundColor: Colors.white,
               title: Text(
-                "Add sugar Details",
+                "Add Weight",
                 style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
             ),
@@ -95,7 +94,7 @@ class _AddWeightState extends State<AddWeight> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Time"),
-                              Text("${date.hour}:${date.minute} AM")
+                              Text("${date.hour}:${date.minute}")
                             ],
                           )
                         ],
@@ -134,7 +133,7 @@ class _AddWeightState extends State<AddWeight> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Icon(Icons.ad_units_outlined),
                       ),
-                      labelText: "Body Weight",
+                      hintText: "Body Weight",
                       labelStyle: TextStyle(
                           fontSize: 20,
                           color: Color.fromARGB(255, 111, 111, 111)),

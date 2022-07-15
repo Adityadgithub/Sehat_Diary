@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/doctor/doctorprofilefields.dart';
 import 'package:firebasetut/pages/drawerwidgets.dart';
+import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
 class doctorprofilepage extends StatefulWidget {
+  var FieldImage;
   var FieldName;
   var Fieldemail;
   var Fieldpassword;
@@ -17,7 +19,9 @@ class doctorprofilepage extends StatefulWidget {
   var Fieldaddress;
   var Fieldcontactnumber;
   var Fieldlicensenum;
+
   doctorprofilepage({
+    this.FieldImage,
     this.FieldName,
     this.Fieldemail,
     this.Fieldpassword,
@@ -31,6 +35,7 @@ class doctorprofilepage extends StatefulWidget {
 
   @override
   State<doctorprofilepage> createState() => _doctorprofilepageState(
+    FieldImage: FieldImage,
       FieldName: FieldName,
       Fieldaddress: Fieldaddress,
       Fieldcontactnumber: Fieldcontactnumber,
@@ -43,6 +48,7 @@ class doctorprofilepage extends StatefulWidget {
 }
 
 class _doctorprofilepageState extends State<doctorprofilepage> {
+  var FieldImage;
   var FieldName;
   var Fieldemail;
   var Fieldpassword;
@@ -52,7 +58,9 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
   var Fieldaddress;
   var Fieldcontactnumber;
   var Fieldlicensenum;
+
   _doctorprofilepageState({
+    this.FieldImage,
     this.FieldName,
     this.Fieldemail,
     this.Fieldpassword,
@@ -64,13 +72,31 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
     this.Fieldlicensenum,
   });
 
+  var MyName;
+
+  getData() async {
+    final firebaseuser = await FirebaseAuth.instance.currentUser;
+    if (firebaseuser != null) {
+      await FirebaseFirestore.instance
+          .collection(loginas!)
+          .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+          .get()
+          .then((ds) =>
+              {MyName = (ds.data()!)['Name'], print("Your name : $MyName")})
+          .catchError((e) {
+        print(e);
+      });
+    } else {
+      return print("Your Name : did not work");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         drawerScrimColor: Colors.black,
-        drawer: Drawerwidgets(drawerusername: FieldName),
+        drawer: Drawerwidgets(drawerusername: FieldName,drawerimage: FieldImage),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.blue),
           centerTitle: true,
@@ -78,13 +104,13 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
           title: Text("My Profile",
               style:
                   TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-
         ),
         body: FutureBuilder(
-
+          future: getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return DoctorProfileFields(
+                  FieldImage: FieldImage,
                   FieldName: FieldName,
                   Fieldaddress: Fieldaddress,
                   Fieldcontactnumber: Fieldcontactnumber,
