@@ -49,7 +49,12 @@ class _MultipleProfileState extends State<MultipleProfile> {
         // body: Text("calllqn"),
         body: Padding(
           padding: const EdgeInsets.all(28.0),
-          child: Firebasecardtest(),
+          child:
+
+              Firebasecardtest(),
+
         ));
   }
 }
+
+

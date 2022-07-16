@@ -141,7 +141,7 @@ class _PnRcardState extends State<PnRcard> {
                           ),
                         );},
                         child: Text(
-                          "Prescription : $pres",
+                          "Prescription",
                           style: TextStyle(),
                         ))),
                 SizedBox(width: 30),

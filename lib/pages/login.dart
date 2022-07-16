@@ -198,7 +198,7 @@ class _loginState extends State<login> {
                         SizedBox(),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "signup");
+                            Navigator.pushReplacementNamed(context, "signup");
                           },
                           child: Text("SIGN UP",
                               style: TextStyle(

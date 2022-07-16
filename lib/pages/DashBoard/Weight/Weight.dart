@@ -29,7 +29,7 @@ class _WeightState extends State<Weight> {
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-        drawer: Drawerwidgets(drawerusername: universalnamefordrawer),
+
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(

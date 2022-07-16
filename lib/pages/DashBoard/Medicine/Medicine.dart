@@ -30,7 +30,7 @@ class _MedicineState extends State<Medicine> {
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-        drawer: Drawerwidgets(drawerusername: universalnamefordrawer),
+
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(

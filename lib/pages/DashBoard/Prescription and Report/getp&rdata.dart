@@ -58,7 +58,7 @@ class _getpnrdataState extends State<getpnrdata> {
             servicesWidget.add(datas);
           }
           if (nametest == null)
-            return Center(child: Text("Click Add (+) to enter your Weight."));
+            return Center(child: Text("Click Add (+) to upload documents."));
           return ListView(
             clipBehavior: Clip.none,
             children: servicesWidget,

@@ -534,8 +534,7 @@ class _UserSignupFieldsState extends State<UserSignupFields> {
                                       'Contact Number': usernumber
                                     });
                                     userid = result;
-                                  }).then((value) => Navigator.pushNamed(
-                                          context, "Firebasecard"));
+                                  }).then((value) => Navigator.pushReplacementNamed(context, "Firebasecard"));
                                 } on FirebaseAuthException catch (e) {
                                   setState(() {
                                     _error = e.message;

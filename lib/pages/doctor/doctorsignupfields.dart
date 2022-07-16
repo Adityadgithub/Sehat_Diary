@@ -605,7 +605,7 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                                   userid = result;
                                 }).then((value) {
 
-                                  Navigator.pushNamed(context, "Firebasecard");
+                                  Navigator.pushReplacementNamed(context, "Firebasecard");
                                 });
                               } on FirebaseAuthException catch (e) {
                                 setState(() {

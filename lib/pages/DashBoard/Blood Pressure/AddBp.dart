@@ -234,7 +234,7 @@ class _AddBpState extends State<AddBp> {
 
                                 .then((value)
                             async {
-                              whichboard = 'Bp';
+
 
                                      await Navigator.pushNamed(
                                           context, "BloodPressure");

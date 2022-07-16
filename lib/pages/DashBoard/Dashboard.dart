@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/profilecard.dart';
+import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -6,7 +10,9 @@ class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
-var whichboard;
+
+
+
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
@@ -60,12 +66,15 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {Navigator.pushNamed(context, "BloodPressure");},
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, "BloodPressure");
+                                  },
                                   child: Column(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage: AssetImage(
-                                            "assets/images/bp.jpg"),
+                                        backgroundImage:
+                                            AssetImage("assets/images/bp.jpg"),
                                         radius: 50,
                                       ),
                                       SizedBox(height: 10),
@@ -83,7 +92,9 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton(
-                                  onPressed: () {Navigator.pushNamed(context, "Weight");},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Weight");
+                                  },
                                   child: Column(
                                     children: [
                                       CircleAvatar(
@@ -100,12 +111,14 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {Navigator.pushNamed(context, "Medicine");},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Medicine");
+                                  },
                                   child: Column(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage:
-                                        AssetImage("assets/images/medicine.jpg"),
+                                        backgroundImage: AssetImage(
+                                            "assets/images/medicine.jpg"),
                                         radius: 50,
                                       ),
                                       SizedBox(height: 10),
@@ -119,17 +132,18 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(height: 50),
-                            Row(           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context,"HeartRate");
+                                    Navigator.pushNamed(context, "HeartRate");
                                   },
                                   child: Column(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage:
-                                        AssetImage("assets/images/heartrate.png"),
+                                        backgroundImage: AssetImage(
+                                            "assets/images/heartrate.png"),
                                         radius: 50,
                                       ),
                                       SizedBox(height: 10),
@@ -148,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
                                     children: [
                                       CircleAvatar(
                                         backgroundImage:
-                                        AssetImage("assets/images/PnR.png"),
+                                            AssetImage("assets/images/PnR.png"),
                                         radius: 50,
                                       ),
                                       SizedBox(height: 10),
@@ -156,15 +170,16 @@ class _DashboardState extends State<Dashboard> {
                                         children: [
                                           Text(
                                             "Prescription",
-                                            style: TextStyle(color: Colors.black),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                           Text(
                                             "& Reports",
-                                            style: TextStyle(color: Colors.black),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                         ],
                                       ),
-
                                     ],
                                   ),
                                 ),
@@ -182,4 +197,3 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
