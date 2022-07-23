@@ -26,19 +26,19 @@ class UserProfilePage extends StatefulWidget {
     this.Fieldgender,
     this.Fieldbloodgroup,
     this.Fieldcontactnumber,
-  
+
   });
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState(
-    FieldImage: FieldImage,
+      FieldImage: FieldImage,
       Fieldname: Fieldname,
       Fieldemail: Fieldemail,
       Fieldpassword: Fieldpassword,
       Fieldcontactnumber: Fieldcontactnumber,
-   Fieldbloodgroup:Fieldbloodgroup,
-   Fielddob:Fielddob,
-   Fieldgender: Fieldgender  );
+      Fieldbloodgroup:Fieldbloodgroup,
+      Fielddob:Fielddob,
+      Fieldgender: Fieldgender  );
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
@@ -77,7 +77,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       doc(FirebaseAuth.instance.currentUser!.uid.toString())
           .get()
           .then((ds) =>
-              {MyName = (ds.data()!)['Name'], print("Your name : $MyName")})
+      {MyName = (ds.data()!)['Name'], print("Your name : $MyName")})
           .catchError((e) {
         print(e);
       });
@@ -99,7 +99,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           backgroundColor: Colors.white,
           title: Text("My Profile",
               style:
-                  TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+              TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
           // title: FutureBuilder(
           //   future: getData(),
           //   builder: (context, snapshot) {
@@ -119,13 +119,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
             if (snapshot.connectionState == ConnectionState.done) {
               return UserProfileFields(
                   FieldImage: FieldImage,
-          Fieldname: Fieldname,
-      Fieldemail: Fieldemail,
-      Fieldpassword: Fieldpassword,
-      Fieldcontactnumber: Fieldcontactnumber,
-   Fieldbloodgroup:Fieldbloodgroup,
-   Fielddob:Fielddob,
-   Fieldgender: Fieldgender  );
+                  Fieldname: Fieldname,
+                  Fieldemail: Fieldemail,
+                  Fieldpassword: Fieldpassword,
+                  Fieldcontactnumber: Fieldcontactnumber,
+                  Fieldbloodgroup:Fieldbloodgroup,
+                  Fielddob:Fielddob,
+                  Fieldgender: Fieldgender  );
             } else {
               return Center(child: CircularProgressIndicator());
             }

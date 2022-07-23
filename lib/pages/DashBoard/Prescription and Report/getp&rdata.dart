@@ -18,20 +18,30 @@ class getpnrdata extends StatefulWidget {
   State<getpnrdata> createState() => _getpnrdataState();
 }
 
-var nametest;
-
 class _getpnrdataState extends State<getpnrdata> {
+  var nametest;
+  var mainboard = FirebaseFirestore.instance
+      .collection(loginas!)
+      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+      .collection('MainUser')
+      .doc('Dashboard')
+      .collection('PnR');
+
+  var family = FirebaseFirestore.instance
+      .collection('User')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard')
+      .doc('path')
+      .collection('PnR');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection(loginas!)
-          .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-          .collection('MainUser')
-          .doc('Dashboard')
-          .collection('PnR')
-          .snapshots(),
+      stream:
+          familymempressed == true ? family.snapshots() : mainboard.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
@@ -48,9 +58,9 @@ class _getpnrdataState extends State<getpnrdata> {
 
             nametest = _docname;
             final datas = buildTile(
-            docname:   _docname,
+              docname: _docname,
               docmobile: _docmobile,
-               pres: _pres,
+              pres: _pres,
               report: _report,
               date: _date,
               time: _time,
@@ -84,7 +94,7 @@ class _getpnrdataState extends State<getpnrdata> {
       report: report,
       pres: pres,
       docmobile: docmobile,
-      docname:docname ,
+      docname: docname,
       // weight: weight,
     );
   }

@@ -1,5 +1,3 @@
-
-
 import 'package:firebasetut/pages/DashBoard/Medicine/getmedicinedata.dart';
 import 'package:firebasetut/pages/FirebaseData.dart';
 import 'package:firebasetut/pages/drawerwidgets.dart';
@@ -23,6 +21,15 @@ class _MedicineState extends State<Medicine> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'Dashboard');
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.blue,
+            ),
+          ),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
@@ -30,7 +37,6 @@ class _MedicineState extends State<Medicine> {
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -43,15 +49,15 @@ class _MedicineState extends State<Medicine> {
                       style: TextStyle(fontSize: 15)),
                 ),
               ),
-              SizedBox(height: 25,),
-              Expanded(
-                  child: getmedicinedata()),
+              SizedBox(
+                height: 25,
+              ),
+              Expanded(child: getmedicinedata()),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-
               Navigator.pushNamed(context, 'AddMedicine');
             },
             child: Icon(Icons.add)),

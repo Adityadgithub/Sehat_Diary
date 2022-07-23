@@ -22,6 +22,15 @@ class _PNRState extends State<PNR> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'Dashboard');
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.blue,
+            ),
+          ),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(

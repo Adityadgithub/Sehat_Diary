@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/AddBp.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/BloodPressure.dart';
+import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/getbpdata.dart';
 
 import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
 import 'package:firebasetut/pages/DashBoard/Heart%20Rate/Add_Heartrate.dart';
@@ -21,10 +22,11 @@ import 'package:firebasetut/pages/DashBoard/Weight/Weight.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
 
 import 'package:firebasetut/pages/FirebaseData.dart';
-import 'package:firebasetut/pages/denalcare.dart';
+
 import 'package:firebasetut/pages/doctor/doctorprofilepage.dart';
 import 'package:firebasetut/pages/dstest.dart';
 import 'package:firebasetut/pages/login.dart';
+import 'package:firebasetut/pages/searchpatient.dart';
 import 'package:firebasetut/pages/signup.dart';
 
 import 'package:firebasetut/pages/user/addmember/multipleprofile.dart';
@@ -40,7 +42,7 @@ import 'select_title/Select_title.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   runApp(MyApp());
 }
 
@@ -60,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         "signup": (context) => SignUp(),
         "login": (context) => login(),
         "profilepage": (context) => doctorprofilepage(),
-        "denalcare": (context) => DentalCare(),
+        "SearchPatient": (context) => SearchPatient(),
         "Firebasecard": (context) => Firebasecard(),
         "UserProfilePage": (context) => UserProfilePage(),
         "UserSignupFields": (context) => UserSignupFields(),
@@ -74,8 +76,11 @@ class _MyAppState extends State<MyApp> {
         "AddSugar":(context) => AddSugar(),
         "getsugardata": (context) => getsugardata(),
 
-        "BloodPressure": (context) => BloodPressure(),
+        "BloodPressure":(context) => BloodPressure(),
         "AddBp":(context) => AddBp(),
+        "getbpdata": (context) => getbpdata(),
+
+
 
         "Weight":(context) => Weight(),
         "AddWeight":(context) => AddWeight(),
@@ -90,7 +95,7 @@ class _MyAppState extends State<MyApp> {
         "getpnrdata": (context) => getpnrdata(),
 
         "AddHeart":(context) => AddHeart(),
-  "HeartRate":(context) => HeartRate(),
+        "HeartRate":(context) => HeartRate(),
         "getheartdata": (context) => getheartdata(),
       },
     );

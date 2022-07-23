@@ -65,8 +65,8 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
 
   // var username;
 
-  var _formKey = GlobalKey<FormState>();
 
+  var _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -78,10 +78,16 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
               child: Column(children: [
                 Stack(
                   children: [
-                    CircleAvatar(
-                        backgroundColor: Colors.black,
-                        radius: 40,
-                        backgroundImage: NetworkImage('$FieldImage')),
+                    if(FieldImage == null)
+                      CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 40,
+                          child: Icon(Icons.person,size: 40,)),
+                    if(FieldImage != null)
+                      CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 40,
+                          backgroundImage: NetworkImage('$FieldImage')),
 
                   ],
                 ),
@@ -318,13 +324,13 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
               child: TextButton(
                   onPressed: () async {
                     _signOut();
-                    await Navigator.pushNamed(context, "login");
+                    await                  Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
                   },
                   child: Center(
                       child: Text(
-                    "Signout",
-                    style: TextStyle(color: Colors.white),
-                  ))),
+                        "Signout",
+                        style: TextStyle(color: Colors.white),
+                      ))),
             )
           ]),
         ),

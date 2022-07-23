@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebasetut/pages/fireabsedatatest.dart';
+import 'package:firebasetut/pages/profilecard.dart';
 import 'package:flutter/material.dart';
 
 class MultipleProfile extends StatefulWidget {
@@ -37,21 +38,45 @@ class _MultipleProfileState extends State<MultipleProfile> {
                 )),
           ),
         ),
-        appBar: AppBar(
+        appBar: AppBar(   leading: IconButton(
+            onPressed: () async {
+              familymempressed = false;
+              membername = null;
+              await Navigator.pushNamed(
+                  context, 'Firebasecard');
+              return membername;
+            },
+            icon: Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.blue,
+            )),
+          actions: [
+            WillPopScope(
+                child: Icon(Icons.arrow_back,color: Colors.white,),
+                onWillPop: () async {
+                  familymempressed = false;
+                  membername = null;
+                  await Navigator.pushNamed(
+                      context, 'Firebasecard');
+                  return membername;
+
+
+                })
+          ],
           toolbarHeight: 70,
           iconTheme: IconThemeData(color: Colors.blue),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text("Switch Profile",
               style:
-                  TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+              TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
         ),
         // body: Text("calllqn"),
         body: Padding(
           padding: const EdgeInsets.all(28.0),
           child:
 
-              Firebasecardtest(),
+          Firebasecardtest(),
 
         ));
   }

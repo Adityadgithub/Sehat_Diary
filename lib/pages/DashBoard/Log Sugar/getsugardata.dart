@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
+import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Add_Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/profilecard.dart';
@@ -17,28 +18,30 @@ class getsugardata extends StatefulWidget {
   State<getsugardata> createState() => _getsugardataState();
 }
 
-var nametest;
+
 
 
 class _getsugardataState extends State<getsugardata> {
+  var nametest;
   var mainboard = FirebaseFirestore.instance
       .collection(loginas!)
       .doc(FirebaseAuth.instance.currentUser!.uid.toString())
       .collection('MainUser')
       .doc('Dashboard')
-      .collection('Sugar')
-      .snapshots();
+      .collection('Sugar');
 
   var family = FirebaseFirestore.instance
       .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('FamilyMember').doc(membername).collection('Sugar')
-      .snapshots();
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard').doc('path').collection('Sugar');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream: familymempressed == true? family:mainboard,
+      stream: familymempressed == true? family.snapshots():mainboard.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/FirebaseData.dart';
+import 'package:firebasetut/pages/drawerwidgets.dart';
 import 'package:firebasetut/pages/profilecard.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +13,52 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-
-
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () async {
+                  if(familymempressed == false){
+
+                    await Navigator.pushNamed(
+                        context, 'Firebasecard');
+                    return membername;
+                  }
+                  else{
+                    membername = null;
+                    familymempressed = false;
+                    await Navigator.pushNamed(
+                        context, 'MultipleProfile');
+                    return membername;
+                  }
+                },
+                icon: Icon(
+                  Icons.arrow_back_outlined,
+                  color: Colors.blue,
+                )),
+            actions: [
+              WillPopScope(
+                  child: Icon(Icons.arrow_back,color: Colors.white,),
+                  onWillPop: () async {
+                    if(familymempressed == false){
+                      membername = null;
+                      familymempressed = false;
+                      await Navigator.pushReplacementNamed(
+                          context, 'Firebasecard');
+                      return membername;
+                    }
+                    else{
+                      membername = null;
+                      await Navigator.pushReplacementNamed(
+                          context, 'MultipleProfile');
+                      return membername;
+                    }
+
+                  })
+            ],
             centerTitle: true,
             backgroundColor: Colors.white,
             title: Text(
@@ -26,6 +66,12 @@ class _DashboardState extends State<Dashboard> {
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
+          drawer: familymempressed == false
+              ? Drawerwidgets(
+                  drawerimage: universalimagefordrawer,
+                  drawerusername: universalnamefordrawer,
+                )
+              : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
             child: Column(

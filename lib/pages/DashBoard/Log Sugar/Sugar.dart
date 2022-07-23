@@ -1,6 +1,7 @@
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/getsugardata.dart';
 import 'package:firebasetut/pages/FirebaseData.dart';
 import 'package:firebasetut/pages/drawerwidgets.dart';
+import 'package:firebasetut/pages/profilecard.dart';
 import 'package:flutter/material.dart';
 
 class Sugar extends StatefulWidget {
@@ -21,14 +22,30 @@ class _SugarState extends State<Sugar> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'Dashboard');
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.blue,
+            ),
+          ),
+          actions: [
+            WillPopScope(
+                child: Icon(Icons.arrow_back),
+                onWillPop: () async {
+                  await Navigator.pushNamed(context, 'Dashboard');
+                  return null!;
+                })
+          ],
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
-            "Sugar/Blood Glucose",
+            "Track Sugar level",
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -41,15 +58,15 @@ class _SugarState extends State<Sugar> {
                       style: TextStyle(fontSize: 15)),
                 ),
               ),
-              SizedBox(height: 25,),
-              Expanded(
-                  child: getsugardata()),
+              SizedBox(
+                height: 25,
+              ),
+              Container(child: Expanded(child: getsugardata())),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-
               Navigator.pushNamed(context, 'AddSugar');
             },
             child: Icon(Icons.add)),

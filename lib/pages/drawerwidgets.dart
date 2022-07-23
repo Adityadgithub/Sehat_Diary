@@ -1,3 +1,4 @@
+import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
@@ -36,50 +37,57 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                       SizedBox(height: 15,),
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage:
-                                NetworkImage("$drawerimage")
-                            ,
-                          ),
+                          if(drawerimage == null)
+                            CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 30,
+                                child: Icon(Icons.person,size: 30,)),
+                          if(drawerimage != null)
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage:
+                              NetworkImage("$drawerimage")
+                              ,
+                            ),
                           SizedBox(width: 20),
                           loginas == 'Doctor'
                               ? Text(
-                                  "Dr. $drawerusername",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17),
-                                )
+                            "Dr. $drawerusername",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          )
                               : Text(
-                                  "$drawerusername",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17),
-                                ),
+                            "$drawerusername",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          ),
+
                         ],
                       ),
                       if (loginas == 'User')
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, 'MultipleProfile');
-                                  },
-                                  child: Text("Switch Profile",
-                                      style: TextStyle(color: Colors.blue))),
-                            ),
-                          ],
-                        ),
-                      )
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, 'MultipleProfile');
+                                    },
+                                    child: Text("Switch Profile",
+                                        style: TextStyle(color: Colors.blue))),
+                              ),
+                            ],
+                          ),
+                        )
                     ],
                   ),
                 ),
@@ -116,17 +124,17 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    navigatedto = 'profilepage';
-                    Navigator.pushNamed(context, 'denalcare');
+
+                    Navigator.pushNamed(context, 'SearchPatient');
                   },
                   child: Container(
                     child: Row(
                       children: [
-                        Icon(Icons.add_box_rounded, color: Colors.black),
+                        Icon(Icons.search, color: Colors.black),
                         SizedBox(
                           width: 15,
                         ),
-                        Text("Dental Care", style: TextStyle(color: Colors.black))
+                        Text("Search Patient", style: TextStyle(color: Colors.black))
                       ],
                     ),
                   ),
@@ -134,29 +142,29 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
               ),
 
             if(loginas == 'User')
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 15.0,
-                bottom: 20,
-              ),
-              child: TextButton(
-                onPressed: () {
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 15.0,
+                  bottom: 20,
+                ),
+                child: TextButton(
+                  onPressed: () {
 
-                  Navigator.pushNamed(context, 'Dashboard');
-                },
-                child: Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.bubble_chart, color: Colors.black),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text("DashBoard", style: TextStyle(color: Colors.black))
-                    ],
+                    Navigator.pushReplacementNamed(context, 'Dashboard');
+                  },
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Icon(Icons.bubble_chart, color: Colors.black),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text("DashBoard", style: TextStyle(color: Colors.black))
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
             Padding(
               padding: const EdgeInsets.only(
@@ -189,7 +197,7 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
               child: TextButton(
                 onPressed: () {
                   navigatedto = 'settings';
-                  Navigator.pushNamed(context, 'profilepage');
+                  Navigator.pushNamed(context, 'Firebasecard');
                 },
                 child: Container(
                   child: Row(
@@ -215,7 +223,7 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
               child: TextButton(
                 onPressed: () {
                   navigatedto = 'logout';
-                  Navigator.pushNamed(context, 'login');
+                  Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
                 },
                 child: Container(
                   child: Row(

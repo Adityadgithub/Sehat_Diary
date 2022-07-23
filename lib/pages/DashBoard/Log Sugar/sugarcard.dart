@@ -28,73 +28,75 @@ class __SugarcardState extends State<Sugarcard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
-      child: Container(
-        height: 250,
-        width: 140,
-        decoration: BoxDecoration(
-          border: Border.all(width: 2, color: Colors.deepPurple),
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '$date',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  '$time',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Results on the event of :',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Text(
-                      '$event',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-                CircleAvatar(
-                  radius: 45,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    radius: 42,
-                    backgroundColor: Colors.white,
-                    child: Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,children: [
-                      Text('$sugarlvl'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text('mg/dL')
-                    ]),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 25.0),
+        child: Container(
+          height: 250,
+          width: 140,
+          decoration: BoxDecoration(
+            border: Border.all(width: 2, color: Colors.deepPurple),
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '$date',
+                    style: TextStyle(color: Colors.grey),
                   ),
-                ),
-              ],
-            ),
-            Divider(),
-            SizedBox(height: 15),
+                  Text(
+                    '$time',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Results on the event of :',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Text(
+                        '$event',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  CircleAvatar(
+                    radius: 45,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: 42,
+                      backgroundColor: Colors.white,
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,children: [
+                        Text('$sugarlvl'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text('mg/dL')
+                      ]),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(),
+              SizedBox(height: 15),
 
-            event == 'Before Meal'? BeforeMealCatalog(): AfterMealCatalog()
-          ]),
+              event == 'Before Meal'? BeforeMealCatalog(): AfterMealCatalog()
+            ]),
+          ),
         ),
       ),
     );

@@ -21,7 +21,15 @@ class _BloodPressureState extends State<BloodPressure> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(leading: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, 'Dashboard');
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.blue,
+          ),
+        ),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
@@ -42,7 +50,7 @@ class _BloodPressureState extends State<BloodPressure> {
                 ),
               ),
               SizedBox(height: 25,),
-              Expanded(child: getbpdata()),
+               Expanded(child: getbpdata()),
             ],
           ),
         ),

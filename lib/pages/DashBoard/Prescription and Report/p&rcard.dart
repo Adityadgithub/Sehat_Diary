@@ -92,7 +92,7 @@ class _PnRcardState extends State<PnRcard> {
                         SizedBox(
                           width: 20,
                         ),
-                        // if(doccontact != null),
+                        if(docmobile != null)
                         Text('Contact: $docmobile'),
                       ],
                     ),
@@ -105,6 +105,7 @@ class _PnRcardState extends State<PnRcard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if(pres != null)
                 Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1),
@@ -145,6 +146,7 @@ class _PnRcardState extends State<PnRcard> {
                           style: TextStyle(),
                         ))),
                 SizedBox(width: 30),
+                if(report != null)
                 Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 1),

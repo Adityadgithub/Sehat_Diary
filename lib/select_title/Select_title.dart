@@ -4,7 +4,7 @@ import '/select_title/user_button.dart';
 import 'package:flutter/material.dart';
 
 
-  String? loginas;
+String? loginas;
 
 class Selecttitle extends StatefulWidget {
   const Selecttitle({Key? key}) : super(key: key);

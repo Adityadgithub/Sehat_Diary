@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:async';
 import 'package:firebasetut/pages/doctor/doctorsignupfields.dart';
 import 'package:firebasetut/pages/user/addmember/addmemsignupfields.dart';
 import 'package:firebasetut/pages/user/usersignupfields.dart';
@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 bool usercreated = false;
 
+
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
   @override
@@ -17,6 +18,15 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      setState(() {});
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,7 +40,7 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
           body:
-              loginas == 'Doctor' ? DoctorSignupFields() : UserSignupFields()),
+          loginas == 'Doctor' ? DoctorSignupFields() : UserSignupFields()),
     );
   }
 }

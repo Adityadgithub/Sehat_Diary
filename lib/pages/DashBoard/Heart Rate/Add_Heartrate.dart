@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/drawerwidgets.dart';
+import 'package:firebasetut/pages/profilecard.dart';
 import 'package:firebasetut/pages/signup.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 
@@ -32,6 +33,19 @@ class _AddHeartState extends State<AddHeart> {
   late Timer _timer;
 
   var heartrpm;
+  var mainboard = FirebaseFirestore.instance
+      .collection(loginas!)
+      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+      .collection('MainUser')
+      .doc('Dashboard')
+      .collection('Heart');
+
+  var family = FirebaseFirestore.instance
+      .collection('User')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard').doc('path').collection('Heart');
 
   @override
   void initState() {
@@ -47,6 +61,14 @@ class _AddHeartState extends State<AddHeart> {
     super.dispose();
   }
 
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  bool validator() {
+    if (formkey.currentState!.validate()) {
+      return true;
+    }
+    return false;
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -102,38 +124,66 @@ class _AddHeartState extends State<AddHeart> {
                 SizedBox(height: 15),
                 SizedBox(height: 15),
                 SizedBox(height: 15),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    setState(() {
-                      heartrpm = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    suffixText: 'RPM',
-                    filled: true,
-                    fillColor: Color.fromARGB(255, 216, 230, 255),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Colors.blue,
+                Form(
+                  key: formkey,
+                  child: TextFormField(
+
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Field can't be empty";
+                      }
+                      if (value!.length > 3) {
+                        return "value should be less than or equal to 3 digit";
+                      }
+
+                      if (int.parse(value) < 50) {
+                        return "value should be under 50 - 130 bpm, try again";
+                      }
+                      if (int.parse(value) > 150) {
+                        return "value should be under 50 - 130 bpm, try again";
+                      }
+                      if (value.contains(',')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
+                      if (value.contains('-')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
+                      if (value.contains(' ')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
+                    },
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        heartrpm = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      suffixText: 'RPM',
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 216, 230, 255),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 2.0,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 2.0,
+                        ),
                       ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Icon(Icons.monitor_heart),
+                      ),
+                      hintText: "Heart RPM",
+                      labelStyle: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 111, 111, 111)),
                     ),
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(right: 5.0),
-                      child: Icon(Icons.monitor_heart),
-                    ),
-                    hintText: "Heart RPM",
-                    labelStyle: TextStyle(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 111, 111, 111)),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -144,27 +194,26 @@ class _AddHeartState extends State<AddHeart> {
                         onPressed: () async {
                           setState(() {});
                           usercreated = true;
-
-                          try {
-                            final result = store
-                                .collection(loginas!)
-                                .doc(FirebaseAuth.instance.currentUser!.uid
-                                    .toString())
-                                .collection('MainUser')
-                                .doc('Dashboard')
-                                .collection('Heart')
-                                .add({
-                              'Date': '${date.day}/${date.month}/${date.year}',
-                              'Time': '${date.hour}:${date.minute}',
-                              'Heart Rate': heartrpm,
-
-                              // 'Dob': date,
-                              // userid = result;
-                            }).then((value) =>
-                                    Navigator.pushNamed(context, "HeartRate"));
-                          } on FirebaseAuthException catch (e) {
-                            print(e);
+                          if (validator()) {
+                            try {
+                              final result = familymempressed == true
+                                  ? family.add({
+                                'Date': '${date.day}/${date.month}/${date.year}',
+                                'Time': '${date.hour}:${date.minute}',
+                                'Heart Rate': heartrpm,
+                              }).then((value) =>
+                                  Navigator.pushNamed(context, "HeartRate"))
+                                  : mainboard.add({
+                                'Date': '${date.day}/${date.month}/${date.year}',
+                                'Time': '${date.hour}:${date.minute}',
+                                'Heart Rate': heartrpm,
+                              }).then((value) =>
+                                  Navigator.pushNamed(context, "HeartRate"));
+                            } on FirebaseAuthException catch (e) {
+                              print(e);
+                            }
                           }
+
                           setState(() {});
                         },
                         child: Container(

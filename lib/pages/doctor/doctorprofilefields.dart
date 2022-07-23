@@ -111,6 +111,12 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
               child: Column(children: [
                 Stack(
                   children: [
+                    if(FieldImage == null)
+                      CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 40,
+                          child: Icon(Icons.person,size: 40,)),
+                    if(FieldImage != null)
                     CircleAvatar(
                       backgroundColor: Colors.black,
                       radius: 40,
@@ -442,7 +448,7 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
               child: TextButton(
                   onPressed: () async {
                     _signOut();
-                    await Navigator.pushNamed(context, "login");
+                    await     Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
                   },
                   child: Text("Signout",style: TextStyle(color: Colors.white),)),
             )

@@ -17,7 +17,7 @@
 
 //   getusertdetails({required this.documentId});
 
- 
+
 //   @override
 //   Widget build(BuildContext context) {
 //     CollectionReference users = FirebaseFirestore.instance.collection('Doctor');

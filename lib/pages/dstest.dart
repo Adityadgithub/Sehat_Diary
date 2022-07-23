@@ -29,7 +29,7 @@ class _dstestState extends State<dstest> {
   _finaldata() async {
     await FirebaseFirestore.instance.collection("users").get().then((event) {
       for (var doc in event.docs) {
-       
+
         print("${doc.id} => ${doc.data()}");
       }
     });
@@ -73,26 +73,26 @@ class _dstestState extends State<dstest> {
     return Scaffold(
         body: Center(
             child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (id != null) Text('$id'),
-        TextButton(
-            onPressed: () {
-              setState(() {});
-              fetchData();
-            },
-            child: Text("Namee : $couldname")),
-        TextButton(
-            onPressed: () async {
-              setState(() {
-                _signOut();
-                collectionRefrence = null;
-                couldname = null;
-              });
-            },
-            child: Text("Signout"))
-      ],
-    )));
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (id != null) Text('$id'),
+                TextButton(
+                    onPressed: () {
+                      setState(() {});
+                      fetchData();
+                    },
+                    child: Text("Namee : $couldname")),
+                TextButton(
+                    onPressed: () async {
+                      setState(() {
+                        _signOut();
+                        collectionRefrence = null;
+                        couldname = null;
+                      });
+                    },
+                    child: Text("Signout"))
+              ],
+            )));
   }
 
   Future<void> _signOut() async {

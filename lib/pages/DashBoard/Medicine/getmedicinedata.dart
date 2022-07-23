@@ -17,21 +17,28 @@ class getmedicinedata extends StatefulWidget {
   State<getmedicinedata> createState() => _getmedicinedataState();
 }
 
-var nametest;
 
 class _getmedicinedataState extends State<getmedicinedata> {
+  var nametest;
+  var mainboard = FirebaseFirestore.instance
+      .collection(loginas!)
+      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+      .collection('MainUser')
+      .doc('Dashboard')
+      .collection('Medicine');
+
+  var family = FirebaseFirestore.instance
+      .collection('User')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard').doc('path').collection('Medicine');
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection(loginas!)
-            .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-            .collection('MainUser')
-            .doc('Dashboard')
-            .collection('Medicine')
-            .snapshots(),
+        stream: familymempressed == true? family.snapshots():mainboard.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final services = snapshot.data!.docs;

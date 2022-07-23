@@ -19,18 +19,24 @@ class getbpdata extends StatefulWidget {
 
 class _getbpdataState extends State<getbpdata> {
   var nulltest;
+  var mainboard = FirebaseFirestore.instance
+      .collection(loginas!)
+      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+      .collection('MainUser')
+      .doc('Dashboard')
+      .collection('Bp');
 
+  var family = FirebaseFirestore.instance
+      .collection('User')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard').doc('path').collection('Bp');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection(loginas!)
-          .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-          .collection('MainUser')
-          .doc('Dashboard')
-          .collection('Bp')
-          .snapshots(),
+      stream: familymempressed == true? family.snapshots():mainboard.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
@@ -56,7 +62,8 @@ class _getbpdataState extends State<getbpdata> {
           if (nulltest == null)
             return Center(
                 child: Text("Click Add (+) to enter your sugar levels."));
-          return ListView(
+          return
+            ListView(
             clipBehavior: Clip.none,
             children: servicesWidget,
             shrinkWrap: true,
