@@ -1,11 +1,11 @@
-
 import '/select_title/doctor_button.dart';
 import '/select_title/user_button.dart';
 import 'package:flutter/material.dart';
 
-
+//Global variable for Login As to customise the app accordingly
 String? loginas;
 
+//common widget for user and doctor buttons
 class Selecttitle extends StatefulWidget {
   const Selecttitle({Key? key}) : super(key: key);
   @override
@@ -13,8 +13,6 @@ class Selecttitle extends StatefulWidget {
 }
 
 class _SelecttitleState extends State<Selecttitle> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

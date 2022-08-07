@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebasetut/pages/signup.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 
 import 'package:flutter/material.dart';
@@ -13,8 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../user/usersignupfields.dart';
-
-Future<DocumentReference<Map<String, dynamic>>>? userid;
 
 class DoctorSignupFields extends StatefulWidget {
   const DoctorSignupFields({Key? key}) : super(key: key);
@@ -26,10 +25,11 @@ class DoctorSignupFields extends StatefulWidget {
 class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
   TextEditingController Licensenumcontroller = TextEditingController();
 
+  //firebase variables to use in future
   var auth = FirebaseAuth.instance;
-
   var store = FirebaseFirestore.instance;
 
+  //variables to store data from fields
   var name;
   var newEmail;
   var newPassword;
@@ -40,29 +40,19 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
   var number;
   var license_num;
 
+//variables to upload profile image
   File? profilecameraimages;
-
   var profilegallaryimages;
-
   UploadTask? profileuploadtask;
-
-  String? profileurlDownlad;
-
   int? profileimagedone;
 
-  bool valid = false;
-  late Timer _timer;
+  // this variable will have the network link of photo
+  String? profileurlDownlad;
 
+  //validation checking variable
   var _error;
 
-  @override
-  void initState() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {});
-    });
-    super.initState();
-  }
-
+  //validation for fields
   bool validator() {
     if (formkey.currentState!.validate()) {
       return true;
@@ -78,7 +68,9 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
       child: Center(
         child: Column(
           children: [
+            //validation widget. will appear if there's any error.
             showAlert(),
+
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
@@ -88,6 +80,9 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                     child: Column(children: [
                       Stack(
                         children: [
+                          //Profile image widgets for 3 different situations. No image, Uploading image and after uploading image completely.
+
+                          //Situation 1 : No image uploaded
                           CircleAvatar(
                             backgroundColor: Colors.black,
                             radius: 40,
@@ -96,17 +91,20 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                               size: 40,
                             ),
                           ),
+                          //Situation 2 : Uploading image
                           if (profileimagedone == 0)
                             CircleAvatar(
                                 backgroundColor: Colors.black,
                                 radius: 40,
                                 child: CircularProgressIndicator()),
+                          //Situation 3 : Uploaded image
                           if (profileimagedone == 1)
                             CircleAvatar(
                                 backgroundColor: Colors.black,
                                 radius: 40,
                                 backgroundImage:
                                     NetworkImage('$profileurlDownlad')),
+
                           IconButton(
                             onPressed: () {
                               showDialog(
@@ -240,7 +238,7 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                                 color: Color.fromARGB(255, 111, 111, 111)),
                           ),
                           onChanged: (value) {
-                            uname = value;
+                            name = value;
                           },
                         ),
                       ),
@@ -576,7 +574,6 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                         TextButton(
                           onPressed: () async {
                             setState(() {});
-                            usercreated = true;
 
                             if (validator()) {
                               try {
@@ -586,11 +583,12 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                                     .then((value) {
                                   final result = store
                                       .collection(loginas!)
-                                      .doc(uname)
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
                                       .collection('MainUser')
                                       .add({
                                     'Image': profileurlDownlad,
-                                    'Name': uname,
+                                    'Name': name,
                                     'Email': newEmail,
                                     'password': newPassword,
                                     'Hospital Name': hospitalname,
@@ -600,7 +598,6 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                                     'Contact Number': number,
                                     'License Number': license_num
                                   });
-                                  userid = result;
                                 }).then((value) {
                                   Navigator.pushReplacementNamed(
                                       context, "Firebasecard");
@@ -636,7 +633,6 @@ class _DoctorSignupFieldsState extends State<DoctorSignupFields> {
                             SizedBox(),
                             TextButton(
                               onPressed: () async {
-                                usercreated = true;
                                 await Navigator.pushNamed(context, "login");
                               },
                               child: Text("LOGIN",

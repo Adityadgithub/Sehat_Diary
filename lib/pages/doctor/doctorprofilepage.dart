@@ -3,8 +3,9 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/common/drawerwidgets.dart';
 import 'package:firebasetut/pages/doctor/doctorprofilefields.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class doctorprofilepage extends StatefulWidget {
 
   @override
   State<doctorprofilepage> createState() => _doctorprofilepageState(
-    FieldImage: FieldImage,
+      FieldImage: FieldImage,
       FieldName: FieldName,
       Fieldaddress: Fieldaddress,
       Fieldcontactnumber: Fieldcontactnumber,
@@ -96,7 +97,8 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
     return SafeArea(
       child: Scaffold(
         drawerScrimColor: Colors.black,
-        drawer: Drawerwidgets(drawerusername: FieldName,drawerimage: FieldImage),
+        drawer:
+            Drawerwidgets(drawerusername: FieldName, drawerimage: FieldImage),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.blue),
           centerTitle: true,

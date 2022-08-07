@@ -1,7 +1,6 @@
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/bpcard.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/getbpdata.dart';
-import 'package:firebasetut/pages/FirebaseData.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
+
 import 'package:flutter/material.dart';
 
 class BloodPressure extends StatefulWidget {
@@ -21,15 +20,16 @@ class _BloodPressureState extends State<BloodPressure> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, 'Dashboard');
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.blue,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'Dashboard');
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.blue,
+            ),
           ),
-        ),
           centerTitle: true,
           backgroundColor: Colors.white,
           title: Text(
@@ -49,14 +49,15 @@ class _BloodPressureState extends State<BloodPressure> {
                       style: TextStyle(fontSize: 15)),
                 ),
               ),
-              SizedBox(height: 25,),
-               Expanded(child: getbpdata()),
+              SizedBox(
+                height: 25,
+              ),
+              Expanded(child: getbpdata()),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-
               Navigator.pushNamed(context, 'AddBp');
             },
             child: Icon(Icons.add)),

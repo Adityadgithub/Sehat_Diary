@@ -6,8 +6,12 @@ import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/DashBoard/Prescription%20and%20Report/p&rcard.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/weightcard.dart';
-import 'package:firebasetut/pages/profilecard.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
@@ -20,21 +24,37 @@ class getpnrdata extends StatefulWidget {
 
 class _getpnrdataState extends State<getpnrdata> {
   var nametest;
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('PnR');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('PnR')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('PnR');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard')
-      .doc('path')
-      .collection('PnR');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('PnR')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('PnR');
 
   @override
   Widget build(BuildContext context) {

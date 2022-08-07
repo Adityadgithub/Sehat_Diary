@@ -6,8 +6,12 @@ import 'package:firebasetut/pages/DashBoard/Heart%20Rate/heartratecard.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/weightcard.dart';
-import 'package:firebasetut/pages/profilecard.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
@@ -18,23 +22,39 @@ class getheartdata extends StatefulWidget {
   State<getheartdata> createState() => _getheartdataState();
 }
 
-
-
 class _getheartdataState extends State<getheartdata> {
   var nametest;
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Heart');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Heart')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Heart');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard').doc('path').collection('Heart');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Heart')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Heart');
   @override
   Widget build(BuildContext context) {
     return Scaffold(

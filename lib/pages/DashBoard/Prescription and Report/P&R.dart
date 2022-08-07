@@ -1,7 +1,6 @@
 import 'package:firebasetut/pages/DashBoard/Prescription%20and%20Report/getp&rdata.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
-import 'package:firebasetut/pages/FirebaseData.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
+
 import 'package:flutter/material.dart';
 
 class PNR extends StatefulWidget {
@@ -38,7 +37,6 @@ class _PNRState extends State<PNR> {
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(

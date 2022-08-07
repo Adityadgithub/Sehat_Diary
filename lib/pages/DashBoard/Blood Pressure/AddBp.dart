@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
-import 'package:firebasetut/pages/profilecard.dart';
-import 'package:firebasetut/pages/signup.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 
 import 'package:flutter/material.dart';
@@ -52,25 +54,45 @@ class _AddBpState extends State<AddBp> {
     _timer.cancel();
     super.dispose();
   }
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Bp');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard').doc('path').collection('Bp');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Bp')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Bp');
+
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Bp')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Bp');
   bool validator() {
     if (formkey.currentState!.validate()) {
       return true;
     }
     return false;
   }
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
@@ -126,197 +148,193 @@ class _AddBpState extends State<AddBp> {
                   ],
                 ),
                 SizedBox(height: 30),
-                 Form(key: formkey ,
-                   child: Column(
-                     children: [
-                       TextFormField(
+                Form(
+                  key: formkey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field can't be empty";
+                          }
 
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Field can't be empty";
-                            }
+                          if (value.length > 3) {
+                            return "value should be less than or equal to 3 digit";
+                          }
 
-                            if (value!.length > 3) {
-                              return "value should be less than or equal to 3 digit";
-                            }
+                          if (int.parse(value) < 50) {
+                            return "value should be under 50 - 150 mmHg, try again";
+                          }
+                          if (int.parse(value) > 150) {
+                            return "value should be under 50 mmHg, try again";
+                          }
 
-                            if (int.parse(value) < 50) {
-                              return "value should be under 50 - 150 mmHg, try again";
-                            }
-                            if (int.parse(value) > 150) {
-                              return "value should be under 50 mmHg, try again";
-                            }
-
-                            if (value.contains(',')) {
-                              return "Invalid input, please enter numbers only.";
-                            }
-                            if (value.contains('-')) {
-                              return "Invalid input, please enter numbers only.";
-                            }
-                            if (value.contains(' ')) {
-                              return "Invalid input, please enter numbers only.";
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            setState(() {
-                              Systolic = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 216, 230, 255),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: BorderSide(
-                                color: Colors.blue,
-                              ),
+                          if (value.contains(',')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains('-')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains(' ')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                        },
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            Systolic = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 216, 230, 255),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 2.0,
-                              ),
-                            ),
-                            suffixText: 'mmHg',
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 5.0),
-                              child: Icon(Icons.featured_play_list_rounded),
-                            ),
-                            hintText: "Systolic Value",
-                            labelStyle: TextStyle(
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 111, 111, 111)),
                           ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 2.0,
+                            ),
+                          ),
+                          suffixText: 'mmHg',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.featured_play_list_rounded),
+                          ),
+                          hintText: "Systolic Value",
+                          labelStyle: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 111, 111, 111)),
                         ),
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field can't be empty";
+                          }
+                          if (value!.length > 3) {
+                            return "value should be less than or equal to 3 digit";
+                          }
 
-                       SizedBox(height: 15),
-                       TextFormField(
+                          if (int.parse(value) < 50) {
+                            return "value should be under 50 - 150 mmHg, try again";
+                          }
+                          if (int.parse(value) > 150) {
+                            return "value should be under 50 - 150 mmHg, try again";
+                          }
 
-                         validator: (value) {
-                           if (value!.isEmpty) {
-                             return "Field can't be empty";
-                           }
-                           if (value!.length > 3) {
-                             return "value should be less than or equal to 3 digit";
-                           }
+                          if (value.contains(',')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains('-')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains(' ')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                        },
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            Diastolic = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 216, 230, 255),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 2.0,
+                            ),
+                          ),
+                          suffixText: 'mmHg',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.featured_play_list_rounded),
+                          ),
+                          hintText: "Diastolic Value",
+                          labelStyle: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 111, 111, 111)),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field can't be empty";
+                          }
+                          if (value!.length > 3) {
+                            return "value should be less than or equal to 3 digit";
+                          }
 
-                           if (int.parse(value) < 50) {
-                             return "value should be under 50 - 150 mmHg, try again";
-                           }
-                           if (int.parse(value) > 150) {
-                             return "value should be under 50 - 150 mmHg, try again";
-                           }
+                          if (int.parse(value) < 50) {
+                            return "value should be under 50 - 130 bpm, try again";
+                          }
+                          if (int.parse(value) > 150) {
+                            return "value should be under 50 - 130 bpm, try again";
+                          }
 
-                           if (value.contains(',')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                           if (value.contains('-')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                           if (value.contains(' ')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                         },
-                         keyboardType: TextInputType.number,
-                         onChanged: (value) {
-                           setState(() {
-                             Diastolic = value;
-                           });
-                         },
-                         decoration: InputDecoration(
-                           filled: true,
-                           fillColor: Color.fromARGB(255, 216, 230, 255),
-                           focusedBorder: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(5.0),
-                             borderSide: BorderSide(
-                               color: Colors.blue,
-                             ),
-                           ),
-                           enabledBorder: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(5.0),
-                             borderSide: BorderSide(
-                               color: Colors.transparent,
-                               width: 2.0,
-                             ),
-                           ),
-                           suffixText: 'mmHg',
-                           prefixIcon: Padding(
-                             padding: const EdgeInsets.only(right: 5.0),
-                             child: Icon(Icons.featured_play_list_rounded),
-                           ),
-                           hintText: "Diastolic Value",
-                           labelStyle: TextStyle(
-                               fontSize: 20,
-                               color: Color.fromARGB(255, 111, 111, 111)),
-                         ),
-                       ),
-                       SizedBox(height: 15),
-                       TextFormField(
-
-                         validator: (value) {
-                           if (value!.isEmpty) {
-                             return "Field can't be empty";
-                           }
-                           if (value!.length > 3) {
-                             return "value should be less than or equal to 3 digit";
-                           }
-
-                           if (int.parse(value) < 50) {
-                             return "value should be under 50 - 130 bpm, try again";
-                           }
-                           if (int.parse(value) > 150) {
-                             return "value should be under 50 - 130 bpm, try again";
-                           }
-
-                           if (value.contains(',')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                           if (value.contains('-')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                           if (value.contains(' ')) {
-                             return "Invalid input, please enter numbers only.";
-                           }
-                         },
-                         keyboardType: TextInputType.number,
-                         onChanged: (value) {
-                           setState(() {
-                             Pulse = value;
-                           });
-                         },
-                         decoration: InputDecoration(
-                           filled: true,
-                           fillColor: Color.fromARGB(255, 216, 230, 255),
-                           focusedBorder: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(5.0),
-                             borderSide: BorderSide(
-                               color: Colors.blue,
-                             ),
-                           ),
-                           enabledBorder: OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(5.0),
-                             borderSide: BorderSide(
-                               color: Colors.transparent,
-                               width: 2.0,
-                             ),
-                           ),
-                           suffixText: 'bpm',
-                           prefixIcon: Padding(
-                             padding: const EdgeInsets.only(right: 5.0),
-                             child: Icon(Icons.monitor_heart_outlined),
-                           ),
-                           hintText: "Pulse Count",
-                           labelStyle: TextStyle(
-                               fontSize: 20,
-                               color: Color.fromARGB(255, 111, 111, 111)),
-                         ),
-                       ),
-                     ],
-                   ),
-                 ),
-
+                          if (value.contains(',')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains('-')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                          if (value.contains(' ')) {
+                            return "Invalid input, please enter numbers only.";
+                          }
+                        },
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            Pulse = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 216, 230, 255),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 2.0,
+                            ),
+                          ),
+                          suffixText: 'bpm',
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: Icon(Icons.monitor_heart_outlined),
+                          ),
+                          hintText: "Pulse Count",
+                          labelStyle: TextStyle(
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 111, 111, 111)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 15),
                 Container(
                   child: Column(
@@ -324,26 +342,28 @@ class _AddBpState extends State<AddBp> {
                       TextButton(
                         onPressed: () async {
                           setState(() {});
-                          usercreated = true;
+
                           if (validator()) {
                             try {
                               final result = familymempressed == true
                                   ? family.add({
-                                'Date': '${date.year}/${date.month}/${date.day}',
-                                'Time': '${date.hour}/${date.minute}',
-                                'Systolic': Systolic,
-                                'Diastolic': Diastolic,
-                                'Pulse': Pulse,
-                              }).then((value) =>
-                                  Navigator.pushNamed(context, "BloodPressure"))
+                                      'Date':
+                                          '${date.year}/${date.month}/${date.day}',
+                                      'Time': '${date.hour}:${date.minute}',
+                                      'Systolic': Systolic,
+                                      'Diastolic': Diastolic,
+                                      'Pulse': Pulse,
+                                    }).then((value) => Navigator.pushNamed(
+                                      context, "BloodPressure"))
                                   : mainboard.add({
-                                'Date': '${date.year}/${date.month}/${date.day}',
-                                'Time': '${date.hour}/${date.minute}',
-                                'Systolic': Systolic,
-                                'Diastolic': Diastolic,
-                                'Pulse': Pulse,
-                              }).then((value) =>
-                                  Navigator.pushNamed(context, "BloodPressure"));
+                                      'Date':
+                                          '${date.year}/${date.month}/${date.day}',
+                                      'Time': '${date.hour}/${date.minute}',
+                                      'Systolic': Systolic,
+                                      'Diastolic': Diastolic,
+                                      'Pulse': Pulse,
+                                    }).then((value) => Navigator.pushNamed(
+                                      context, "BloodPressure"));
                             } on FirebaseAuthException catch (e) {
                               print(e);
                             }

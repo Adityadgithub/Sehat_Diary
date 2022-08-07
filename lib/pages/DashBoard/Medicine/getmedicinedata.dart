@@ -5,8 +5,12 @@ import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/DashBoard/Medicine/medicinecard.dart';
-import 'package:firebasetut/pages/profilecard.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
@@ -17,39 +21,58 @@ class getmedicinedata extends StatefulWidget {
   State<getmedicinedata> createState() => _getmedicinedataState();
 }
 
-
 class _getmedicinedataState extends State<getmedicinedata> {
   var nametest;
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Medicine');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Medicine')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Medicine');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard').doc('path').collection('Medicine');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Medicine')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Medicine');
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           body: StreamBuilder<QuerySnapshot>(
-        stream: familymempressed == true? family.snapshots():mainboard.snapshots(),
+        stream: familymempressed == true
+            ? family.snapshots()
+            : mainboard.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final services = snapshot.data!.docs;
             List<Widget> servicesWidget = [];
             for (var st in services) {
-
               final _date = (st.data()! as Map<String, dynamic>)['Date'];
               final _time = (st.data()! as Map<String, dynamic>)['Time'];
               final _medname = (st.data()! as Map<String, dynamic>)['Medname'];
               final _medtype = (st.data()! as Map<String, dynamic>)['MedType'];
-              final _quantity = (st.data()! as Map<String, dynamic>)['Quantity'];
+              final _quantity =
+                  (st.data()! as Map<String, dynamic>)['Quantity'];
               final _nooftimes =
                   (st.data()! as Map<String, dynamic>)['No. of times'];
               final _freq = (st.data()! as Map<String, dynamic>)['Frequncy'];

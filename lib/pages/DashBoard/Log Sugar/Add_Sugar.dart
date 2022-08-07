@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
-import 'package:firebasetut/pages/profilecard.dart';
-import 'package:firebasetut/pages/signup.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 
 import 'package:flutter/material.dart';
@@ -23,19 +25,37 @@ class AddSugar extends StatefulWidget {
 }
 
 class _AddSugarState extends State<AddSugar> {
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Sugar');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Sugar')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Sugar');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard').doc('path').collection('Sugar');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Sugar')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Sugar');
 
   TextEditingController Licensenumcontroller = TextEditingController();
 
@@ -141,7 +161,6 @@ class _AddSugarState extends State<AddSugar> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: DropdownButtonFormField<String>(
-
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color.fromARGB(255, 216, 230, 255),
@@ -162,8 +181,6 @@ class _AddSugarState extends State<AddSugar> {
                           padding: const EdgeInsets.only(right: 5.0),
                           child: Icon(Icons.event_note_outlined),
                         ),
-
-
                       ),
                       onChanged: (eventitem) {
                         setState(() {
@@ -180,7 +197,6 @@ class _AddSugarState extends State<AddSugar> {
                 Form(
                   key: formkey,
                   child: TextFormField(
-
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Field can't be empty";
@@ -246,7 +262,6 @@ class _AddSugarState extends State<AddSugar> {
                       TextButton(
                         onPressed: () async {
                           setState(() {});
-                          usercreated = true;
 
                           if (validator()) {
                             try {

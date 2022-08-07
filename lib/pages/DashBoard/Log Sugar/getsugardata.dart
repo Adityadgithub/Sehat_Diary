@@ -5,8 +5,12 @@ import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Add_Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
-import 'package:firebasetut/pages/profilecard.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/pages/user/addmember/multipleprofile.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
@@ -18,30 +22,45 @@ class getsugardata extends StatefulWidget {
   State<getsugardata> createState() => _getsugardataState();
 }
 
-
-
-
 class _getsugardataState extends State<getsugardata> {
   var nametest;
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Sugar');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Sugar')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Sugar');
 
-  var family = FirebaseFirestore.instance
+  var family = doctoraccessgetusersehatid == null?
+  FirebaseFirestore.instance
       .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .doc(universalsehatid)
       .collection('Family member')
       .doc(membername)
-      .collection('Dashboard').doc('path').collection('Sugar');
-
+      .collection('Dashboard')
+      .doc('path')
+      .collection('Sugar'):
+  FirebaseFirestore.instance
+      .collection('User')
+      .doc(doctoraccessgetusersehatid)
+      .collection('Family member')
+      .doc(membername)
+      .collection('Dashboard')
+      .doc('path')
+      .collection('Sugar');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream: familymempressed == true? family.snapshots():mainboard.snapshots(),
+      stream:
+          familymempressed == true ? family.snapshots() : mainboard.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
@@ -72,7 +91,8 @@ class _getsugardataState extends State<getsugardata> {
   }
 
   buildTile(_sugarlvl, _date, _time, _event, BuildContext context) {
-    return Sugarcard(date: _date,
+    return Sugarcard(
+      date: _date,
       event: _event,
       time: _time,
       sugarlvl: _sugarlvl,

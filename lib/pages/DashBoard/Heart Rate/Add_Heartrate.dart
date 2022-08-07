@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
-import 'package:firebasetut/pages/profilecard.dart';
-import 'package:firebasetut/pages/signup.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/select_title/Select_title.dart';
 
 import 'package:flutter/material.dart';
@@ -33,24 +35,43 @@ class _AddHeartState extends State<AddHeart> {
   late Timer _timer;
 
   var heartrpm;
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Heart');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Heart')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Heart');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard').doc('path').collection('Heart');
-
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Heart')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Heart');
   @override
   void initState() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {date = DateTime.now();});
+      setState(() {
+        date = DateTime.now();
+      });
     });
     super.initState();
   }
@@ -69,6 +90,7 @@ class _AddHeartState extends State<AddHeart> {
     }
     return false;
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -127,7 +149,6 @@ class _AddHeartState extends State<AddHeart> {
                 Form(
                   key: formkey,
                   child: TextFormField(
-
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Field can't be empty";
@@ -193,22 +214,24 @@ class _AddHeartState extends State<AddHeart> {
                       TextButton(
                         onPressed: () async {
                           setState(() {});
-                          usercreated = true;
+
                           if (validator()) {
                             try {
                               final result = familymempressed == true
                                   ? family.add({
-                                'Date': '${date.day}/${date.month}/${date.year}',
-                                'Time': '${date.hour}:${date.minute}',
-                                'Heart Rate': heartrpm,
-                              }).then((value) =>
-                                  Navigator.pushNamed(context, "HeartRate"))
+                                      'Date':
+                                          '${date.day}/${date.month}/${date.year}',
+                                      'Time': '${date.hour}:${date.minute}',
+                                      'Heart Rate': heartrpm,
+                                    }).then((value) =>
+                                      Navigator.pushNamed(context, "HeartRate"))
                                   : mainboard.add({
-                                'Date': '${date.day}/${date.month}/${date.year}',
-                                'Time': '${date.hour}:${date.minute}',
-                                'Heart Rate': heartrpm,
-                              }).then((value) =>
-                                  Navigator.pushNamed(context, "HeartRate"));
+                                      'Date':
+                                          '${date.day}/${date.month}/${date.year}',
+                                      'Time': '${date.hour}:${date.minute}',
+                                      'Heart Rate': heartrpm,
+                                    }).then((value) => Navigator.pushNamed(
+                                      context, "HeartRate"));
                             } on FirebaseAuthException catch (e) {
                               print(e);
                             }

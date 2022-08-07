@@ -6,11 +6,14 @@ import 'package:firebasetut/select_title/Select_title.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:clipboard/clipboard.dart';
 import 'package:image_picker/image_picker.dart';
+
+var usersehatidafterlogin;
 
 class UserProfileFields extends StatefulWidget {
   var FieldImage;
+  var Fieldsehatid;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -21,6 +24,7 @@ class UserProfileFields extends StatefulWidget {
 
   UserProfileFields({
     this.FieldImage,
+    this.Fieldsehatid,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -29,9 +33,11 @@ class UserProfileFields extends StatefulWidget {
     this.Fieldbloodgroup,
     this.Fieldcontactnumber,
   });
+
   @override
   State<UserProfileFields> createState() => _UserProfileFieldsState(
       FieldImage: FieldImage,
+      Fieldsehatid: Fieldsehatid,
       Fieldname: Fieldname,
       Fieldemail: Fieldemail,
       Fieldpassword: Fieldpassword,
@@ -43,6 +49,7 @@ class UserProfileFields extends StatefulWidget {
 
 class _UserProfileFieldsState extends State<UserProfileFields> {
   var FieldImage;
+  var Fieldsehatid;
   var Fieldname;
   var Fieldemail;
   var Fieldpassword;
@@ -53,6 +60,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
 
   _UserProfileFieldsState({
     this.FieldImage,
+    this.Fieldsehatid,
     this.Fieldname,
     this.Fieldemail,
     this.Fieldpassword,
@@ -61,12 +69,16 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
     this.Fieldbloodgroup,
     this.Fieldcontactnumber,
   });
+
   List<String> docIDs = [];
 
   // var username;
+  @override
+  void initState() {
+    // TODO: implement initState
+    usersehatidafterlogin = Fieldsehatid;
+  }
 
-
-  var _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -78,24 +90,70 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
               child: Column(children: [
                 Stack(
                   children: [
-                    if(FieldImage == null)
+                    if (FieldImage == null)
                       CircleAvatar(
                           backgroundColor: Colors.black,
                           radius: 40,
-                          child: Icon(Icons.person,size: 40,)),
-                    if(FieldImage != null)
+                          child: Icon(
+                            Icons.person,
+                            size: 40,
+                          )),
+                    if (FieldImage != null)
                       CircleAvatar(
                           backgroundColor: Colors.black,
                           radius: 40,
                           backgroundImage: NetworkImage('$FieldImage')),
-
                   ],
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
+                Container(
+                  height: 55,
+                  width: MediaQuery.of(context).size.width,
+                  child: TextFormField(
+                    initialValue: usersehatidafterlogin,
+                    enableSuggestions: true,
+                    validator: (value) {
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                          width: 1.0,
+                        ),
+                      ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Icon(Icons.key),
+                      ),
+                      suffixIcon: TextButton(
+                        child: Icon(Icons.copy),
+                        onPressed: () {
+                          FlutterClipboard.copy(Fieldsehatid);
+                        },
+                      ),
+                      labelStyle: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 111, 111, 111)),
+                    ),
+                    onChanged: (value) {
+                      // Email = value;
+                    },
+                  ),
+                ),
+                SizedBox(height: 20),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: TextFormField(
-                    key: _formKey,
                     initialValue: Fieldname,
                     enableSuggestions: true,
                     validator: (value) {
@@ -197,7 +255,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                   ),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: Icon(Icons.local_hospital),
+                    child: Icon(Icons.call),
                   ),
                   hintText: "Contact Number",
                   labelStyle: TextStyle(
@@ -233,7 +291,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                   ),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: Icon(Icons.stars_rounded),
+                    child: Icon(Icons.date_range),
                   ),
                   hintText: "Date of Birth",
                   labelStyle: TextStyle(
@@ -269,7 +327,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                   ),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: Icon(Icons.school),
+                    child: Icon(Icons.male),
                   ),
                   hintText: "Gender",
                   labelStyle: TextStyle(
@@ -305,7 +363,7 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
                   ),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: Icon(Icons.home),
+                    child: Icon(Icons.bloodtype),
                   ),
                   hintText: "Blood Group",
                   labelStyle: TextStyle(
@@ -324,13 +382,14 @@ class _UserProfileFieldsState extends State<UserProfileFields> {
               child: TextButton(
                   onPressed: () async {
                     _signOut();
-                    await                  Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+                    await Navigator.pushNamedAndRemoveUntil(
+                        context, 'login', (route) => false);
                   },
                   child: Center(
                       child: Text(
-                        "Signout",
-                        style: TextStyle(color: Colors.white),
-                      ))),
+                    "Signout",
+                    style: TextStyle(color: Colors.white),
+                  ))),
             )
           ]),
         ),

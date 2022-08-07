@@ -1,7 +1,5 @@
-
 import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
-import 'package:firebasetut/pages/FirebaseData.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
+
 import 'package:flutter/material.dart';
 
 class Weight extends StatefulWidget {
@@ -38,7 +36,6 @@ class _WeightState extends State<Weight> {
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -51,15 +48,15 @@ class _WeightState extends State<Weight> {
                       style: TextStyle(fontSize: 15)),
                 ),
               ),
-              SizedBox(height: 25,),
-              Expanded(
-                  child: getweightdata()),
+              SizedBox(
+                height: 25,
+              ),
+              Expanded(child: getweightdata()),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-
               Navigator.pushNamed(context, 'AddWeight');
             },
             child: Icon(Icons.add)),

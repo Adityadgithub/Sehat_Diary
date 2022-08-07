@@ -5,9 +5,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasetut/pages/profilecard.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
 
-import 'package:firebasetut/pages/signup.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -24,21 +26,37 @@ class AddPnR extends StatefulWidget {
 }
 
 class _AddPnRState extends State<AddPnR> {
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('PnR');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('PnR')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('PnR');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard')
-      .doc('path')
-      .collection('PnR');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('PnR')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('PnR');
   TextEditingController Licensenumcontroller = TextEditingController();
 
   var auth = FirebaseAuth.instance;
@@ -604,7 +622,7 @@ class _AddPnRState extends State<AddPnR> {
                                 TextButton(
                                   onPressed: () async {
                                     setState(() {});
-                                    usercreated = true;
+
                                     if (validator()) {
                                       try {
                                         final result = familymempressed == true

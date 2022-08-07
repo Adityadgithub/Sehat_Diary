@@ -1,6 +1,7 @@
 import '/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
+//user button widget
 class userbutton extends StatefulWidget {
   const userbutton({Key? key}) : super(key: key);
   @override
@@ -13,7 +14,7 @@ class _userbuttonState extends State<userbutton> {
     return TextButton(
         onPressed: () async {
           loginas = "User";
-          await Navigator.pushNamed(context, "login");
+          await Navigator.pushReplacementNamed(context, "login");
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

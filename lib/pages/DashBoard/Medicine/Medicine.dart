@@ -1,6 +1,5 @@
 import 'package:firebasetut/pages/DashBoard/Medicine/getmedicinedata.dart';
-import 'package:firebasetut/pages/FirebaseData.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
+
 import 'package:flutter/material.dart';
 
 class Medicine extends StatefulWidget {

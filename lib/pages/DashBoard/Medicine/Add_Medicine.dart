@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasetut/pages/drawerwidgets.dart';
-import 'package:firebasetut/pages/profilecard.dart';
-import 'package:firebasetut/pages/signup.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/profilecard.dart';
+import 'package:firebasetut/pages/common/signup.dart';
+import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+
 import 'package:firebasetut/pages/user/usersignupfields.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 
@@ -24,21 +26,37 @@ class AddMedicine extends StatefulWidget {
 }
 
 class _AddMedicineState extends State<AddMedicine> {
-  var mainboard = FirebaseFirestore.instance
-      .collection(loginas!)
-      .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-      .collection('MainUser')
-      .doc('Dashboard')
-      .collection('Medicine');
+  var mainboard = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Medicine')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('MainUser')
+          .doc('Dashboard')
+          .collection('Medicine');
 
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard')
-      .doc('path')
-      .collection('Medicine');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Medicine')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Medicine');
   TextEditingController Licensenumcontroller = TextEditingController();
 
   var auth = FirebaseAuth.instance;
@@ -95,9 +113,7 @@ class _AddMedicineState extends State<AddMedicine> {
           startdateselected == true &&
           enddateselected == true) {
         return true;
-      }
-      else
-      {
+      } else {
         setState(() {
           _error = true;
         });
@@ -105,8 +121,6 @@ class _AddMedicineState extends State<AddMedicine> {
       }
     }
     return false;
-
-
   }
 
   Widget showAlert() {
@@ -145,7 +159,8 @@ class _AddMedicineState extends State<AddMedicine> {
           ),
           body: SingleChildScrollView(
             child: Center(
-              child: Form(key: formkey,
+              child: Form(
+                key: formkey,
                 child: Column(
                   children: [
                     showAlert(),
@@ -164,7 +179,8 @@ class _AddMedicineState extends State<AddMedicine> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text("Date"),
-                                    Text("${date.year}/${date.month}/${date.day}")
+                                    Text(
+                                        "${date.year}/${date.month}/${date.day}")
                                   ],
                                 )
                               ],
@@ -191,92 +207,91 @@ class _AddMedicineState extends State<AddMedicine> {
                         SizedBox(height: 15),
                         SizedBox(height: 15),
                         TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Field can't be empty";
-                              }
-                              if (value.length > 20) {
-                                return "name should have less than or equal to 20 character";
-                              }
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Field can't be empty";
+                            }
+                            if (value.length > 20) {
+                              return "name should have less than or equal to 20 character";
+                            }
 
-                              if (value.length < 5) {
-                                return "name should have at least 5 character";
-                              }
-                              if (value.contains(',')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('-')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('@')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('#')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('<')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('>')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('?')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains(';')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains(':')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('/')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('=')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('(')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains(')')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-                              if (value.contains('!')) {
-                                return "Invalid input, value can't contain {@#(),-;:=<>?!}";
-                              }
-
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                Medicinename = value;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromARGB(255, 216, 230, 255),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
-                                ),
+                            if (value.length < 5) {
+                              return "name should have at least 5 character";
+                            }
+                            if (value.contains(',')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('-')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('@')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('#')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('<')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('>')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('?')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains(';')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains(':')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('/')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('=')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('(')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains(')')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                            if (value.contains('!')) {
+                              return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                            }
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              Medicinename = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 216, 230, 255),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 2.0,
-                                ),
-                              ),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.only(right: 5.0),
-                                child: Icon(Icons.local_hospital),
-                              ),
-                              hintText: "Medicine Name",
-                              labelStyle: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 111, 111, 111)),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 2.0,
+                              ),
+                            ),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: Icon(Icons.local_hospital),
+                            ),
+                            hintText: "Medicine Name",
+                            labelStyle: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 111, 111, 111)),
                           ),
+                        ),
                         SizedBox(height: 15),
                         Row(
                           children: [
@@ -289,13 +304,15 @@ class _AddMedicineState extends State<AddMedicine> {
                                       fillColor:
                                           Color.fromARGB(255, 216, 230, 255),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: BorderSide(
                                           color: Colors.blue,
                                         ),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                         borderSide: BorderSide(
                                           color: Colors.transparent,
                                           width: 2.0,
@@ -309,8 +326,8 @@ class _AddMedicineState extends State<AddMedicine> {
                                       hintText: "Type",
                                       labelStyle: TextStyle(
                                           fontSize: 20,
-                                          color:
-                                              Color.fromARGB(255, 111, 111, 111)),
+                                          color: Color.fromARGB(
+                                              255, 111, 111, 111)),
                                     ),
                                     onChanged: (medtypeitem) {
                                       setState(() {
@@ -386,7 +403,8 @@ class _AddMedicineState extends State<AddMedicine> {
                                   hintText: "Quantity",
                                   labelStyle: TextStyle(
                                       fontSize: 20,
-                                      color: Color.fromARGB(255, 111, 111, 111)),
+                                      color:
+                                          Color.fromARGB(255, 111, 111, 111)),
                                 ),
                               ),
                             ),
@@ -429,7 +447,8 @@ class _AddMedicineState extends State<AddMedicine> {
                                   },
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: Color.fromARGB(255, 216, 230, 255),
+                                    fillColor:
+                                        Color.fromARGB(255, 216, 230, 255),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                       borderSide: BorderSide(
@@ -595,7 +614,7 @@ class _AddMedicineState extends State<AddMedicine> {
                               TextButton(
                                 onPressed: () async {
                                   setState(() {});
-                                  usercreated = true;
+
                                   if (medtypeselecteditem == null &&
                                       StartDate == null &&
                                       EndDate == null &&
@@ -654,7 +673,8 @@ class _AddMedicineState extends State<AddMedicine> {
                                             Radius.circular(15))),
                                     child: Center(
                                       child: Text("SUBMIT",
-                                          style: TextStyle(color: Colors.white)),
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                     )),
                               ),
                             ],
