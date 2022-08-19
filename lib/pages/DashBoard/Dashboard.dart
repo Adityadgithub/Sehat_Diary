@@ -1,6 +1,13 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/getbpdata.dart';
+import 'package:firebasetut/pages/DashBoard/Heart%20Rate/getheartdata.dart';
+import 'package:firebasetut/pages/DashBoard/Log%20Sugar/getsugardata.dart';
+import 'package:firebasetut/pages/DashBoard/Medicine/getmedicinedata.dart';
+import 'package:firebasetut/pages/DashBoard/Vaccine/getvaccinedata.dart';
+import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
+import 'package:firebasetut/pages/Firebase/Firebasefamilymemdata.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/common/drawerwidgets.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
@@ -17,6 +24,8 @@ class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
+
+var generaterepo = false;
 
 class _DashboardState extends State<Dashboard> {
   @override
@@ -105,6 +114,7 @@ class _DashboardState extends State<Dashboard> {
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (familymempressed == true && searchpatientpressed == false)
                     Padding(
@@ -162,183 +172,197 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "Sugar");
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/sugar.jpg"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text("Log Sugar",
-                                            style:
-                                                TextStyle(color: Colors.black))
-                                      ],
-                                    ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Sugar");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/sugar.jpg"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text("Log Sugar",
+                                          style: TextStyle(color: Colors.black))
+                                    ],
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, "BloodPressure");
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/bp.jpg"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Blood Pressure",
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 50),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "Weight");
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/weight.png"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Track Weight",
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "Medicine");
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/medicine.jpg"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Track Medicine",
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 50),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "HeartRate");
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/heartrate.png"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "Heart Rate",
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, 'PnR');
-                                    },
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/PnR.png"),
-                                          radius: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "Prescription",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            Text(
-                                              "& Reports",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 50),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, "HeartRate");
-                                },
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "assets/images/heartrate.png"),
-                                      radius: 50,
-                                    ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      "Heart Rate",
-                                      style: TextStyle(color: Colors.black),
-                                    )
-                                  ],
                                 ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, "BloodPressure");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("assets/images/bp.jpg"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Blood Pressure",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 50),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Weight");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/weight.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Track Weight",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Medicine");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/medicine.jpg"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Track Medicine",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 50),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "HeartRate");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/heartrate.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Heart Rate",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, 'PnR');
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("assets/images/PnR.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Prescription",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          Text(
+                                            "& Reports",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 50),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, "Vaccine");
+                              },
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage("assets/images/vaccine.png"),
+                                    radius: 50,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Vaccine",
+                                    style: TextStyle(color: Colors.black),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: TextButton(
+                        onPressed: () {
+                          generaterepo = true;
+
+                          Navigator.pushNamed(context, 'GenerateRepo');
+                        },
+                        child: Text(
+                          'Generate Report',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

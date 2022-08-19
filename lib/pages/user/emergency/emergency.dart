@@ -120,7 +120,8 @@ class _EmergencyState extends State<Emergency> {
                                 await getlocation();
 
                                 print('MCC $recipents');
-                                String message = '''HELP! IT'S AN EMERGENCY
+                                String message =
+                                    '''HELP! IT'S AN EMERGENCY
 Please contact to Mr. $universalnamefordrawer, they need help ASAP.
 
 their contact number : +91$universalcontactnumber

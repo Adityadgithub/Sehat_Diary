@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebasetut/pages/Firebase/Firebasefamilymemdata.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
-import 'package:firebasetut/pages/fireabsedatatest.dart';
 
 import 'package:flutter/material.dart';
 
@@ -75,7 +75,7 @@ class _MultipleProfileState extends State<MultipleProfile> {
         ),
         // body: Text("calllqn"),
         body: Padding(
-          padding: const EdgeInsets.all(28.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: getfamilymemdata(),
         ));
   }

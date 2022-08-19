@@ -358,21 +358,21 @@ class _AddMedicineState extends State<AddMedicine> {
                                     return "Field can't be empty";
                                   }
                                   if (value!.length > 3) {
-                                    return "value should be less than or equal to 3 digit";
+                                    return "Max input is 2 digit";
                                   }
 
                                   if (int.parse(value) < 0) {
-                                    return "value should be greater than 0, try again";
+                                    return "value can't be 0";
                                   }
 
                                   if (value.contains(',')) {
-                                    return "Invalid input, please enter numbers only.";
+                                    return "Invalid input.";
                                   }
                                   if (value.contains('-')) {
-                                    return "Invalid input, please enter numbers only.";
+                                    return "Invalid input.";
                                   }
                                   if (value.contains(' ')) {
-                                    return "Invalid input, please enter numbers only.";
+                                    return "Invalid input.";
                                   }
                                 },
                                 keyboardType: TextInputType.number,

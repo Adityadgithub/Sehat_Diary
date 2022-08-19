@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
-import 'package:firebasetut/pages/DashBoard/Heart%20Rate/heartratecard.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
+import 'package:firebasetut/pages/DashBoard/Vaccine/vaccinecard.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/weightcard.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,14 +16,14 @@ import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
-class getheartdata extends StatefulWidget {
-  const getheartdata({Key? key}) : super(key: key);
+class getvaccinedata extends StatefulWidget {
+  const getvaccinedata({Key? key}) : super(key: key);
 
   @override
-  State<getheartdata> createState() => _getheartdataState();
+  State<getvaccinedata> createState() => _getvaccinedataState();
 }
 
-class _getheartdataState extends State<getheartdata> {
+class _getvaccinedataState extends State<getvaccinedata> {
   var nametest;
   var mainboard = doctoraccessgetusersehatid == null
       ? FirebaseFirestore.instance
@@ -31,13 +31,13 @@ class _getheartdataState extends State<getheartdata> {
           .doc(universalsehatid)
           .collection('MainUser')
           .doc('Dashboard')
-          .collection('Heart')
+          .collection('Vaccine')
       : FirebaseFirestore.instance
           .collection('User')
           .doc(doctoraccessgetusersehatid)
           .collection('MainUser')
           .doc('Dashboard')
-          .collection('Heart');
+          .collection('Vaccine');
 
   var family = doctoraccessgetusersehatid == null
       ? FirebaseFirestore.instance
@@ -47,7 +47,7 @@ class _getheartdataState extends State<getheartdata> {
           .doc(membername)
           .collection('Dashboard')
           .doc('path')
-          .collection('Heart')
+          .collection('Vaccine')
       : FirebaseFirestore.instance
           .collection('User')
           .doc(doctoraccessgetusersehatid)
@@ -55,7 +55,7 @@ class _getheartdataState extends State<getheartdata> {
           .doc(membername)
           .collection('Dashboard')
           .doc('path')
-          .collection('Heart');
+          .collection('Vaccine');
 
   @override
   Widget build(BuildContext context) {
@@ -68,34 +68,35 @@ class _getheartdataState extends State<getheartdata> {
           final services = snapshot.data!.docs;
           List<Widget> servicesWidget = [];
           for (var st in services) {
-            final _heart = (st.data()! as Map<String, dynamic>)['Heart Rate'];
             final _date = (st.data()! as Map<String, dynamic>)['Date'];
             final _time = (st.data()! as Map<String, dynamic>)['Time'];
+            final _vaccine_type =
+                (st.data()! as Map<String, dynamic>)['Vaccine type'];
+            final _vaccine = (st.data()! as Map<String, dynamic>)['Vaccine'];
+            final _certificate =
+                (st.data()! as Map<String, dynamic>)['Certificate'];
 
-            nametest = _heart;
-            final datas = buildTile(
-              _heart,
-              _date,
-              _time,
-            );
+            nametest = _vaccine;
+            final datas =
+                buildTile(_vaccine_type, _vaccine, _date, _time, _certificate);
             servicesWidget.add(datas);
           }
-          double rows = servicesWidget.length / 2;
 
+          double rows = servicesWidget.length / 2;
           if (servicesWidget.length != 0 &&
               servicesWidget.length != 1 &&
               servicesWidget.length % 2 == 0) {
-            heartwidgetsnum = rows * 80;
+            vaccinewidgetsnum = rows * 100;
           } else if (servicesWidget.length == 1) {
-            heartwidgetsnum = 80;
+            vaccinewidgetsnum = 100;
           } else if (servicesWidget.length == 0 ||
               servicesWidget.length == null) {
-            heartwidgetsnum = 1;
+            vaccinewidgetsnum = 1;
           } else {
-            heartwidgetsnum = (rows + 0.5) * 80;
+            vaccinewidgetsnum = (rows + 0.5) * 90;
           }
           if (nametest == null)
-            return Center(child: Text("Click Add (+) to enter your Weight."));
+            return Center(child: Text("Click Add (+) to enter your Vaccine."));
           if (generaterepo == false) {
             return ListView(
               clipBehavior: Clip.antiAlias,
@@ -119,13 +120,14 @@ class _getheartdataState extends State<getheartdata> {
     ));
   }
 
-  buildTile(heart, date, time) {
+  buildTile(vaccine_type, vaccine, date, time, certificate) {
     if (generaterepo == false) {
-      return Heartcard(
-        date: date,
-        time: time,
-        heart: heart,
-      );
+      return Vaccinecard(
+          date: date,
+          time: time,
+          vaccine_type: vaccine_type,
+          vaccine: vaccine,
+          certificate: certificate);
     } else {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,11 +152,23 @@ class _getheartdataState extends State<getheartdata> {
           Row(
             children: [
               Text(
-                "Pulse : ",
+                "Catergory : ",
                 style: TextStyle(color: Colors.cyan[900], fontSize: 14),
               ),
               Text(
-                "$heart rpm",
+                "$vaccine_type",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Vaccine : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$vaccine",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
             ],

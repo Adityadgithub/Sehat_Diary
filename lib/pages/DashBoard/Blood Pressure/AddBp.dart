@@ -358,7 +358,7 @@ class _AddBpState extends State<AddBp> {
                                   : mainboard.add({
                                       'Date':
                                           '${date.year}/${date.month}/${date.day}',
-                                      'Time': '${date.hour}/${date.minute}',
+                                      'Time': '${date.hour}:${date.minute}',
                                       'Systolic': Systolic,
                                       'Diastolic': Diastolic,
                                       'Pulse': Pulse,

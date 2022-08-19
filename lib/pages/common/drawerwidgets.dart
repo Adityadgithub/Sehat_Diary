@@ -107,7 +107,7 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                 child: TextButton(
                   onPressed: () {
                     navigatedto = 'profilepage';
-                    Navigator.pushNamed(context, 'profilepage');
+                    Navigator.pushNamed(context, 'Firebasecard');
                   },
                   child: Container(
                     child: Row(
@@ -206,7 +206,6 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                 child: TextButton(
                   onPressed: () {
                     navigatedto = 'aboutus';
-                    Navigator.pushNamed(context, 'profilepage');
                   },
                   child: Container(
                     child: Row(
@@ -229,7 +228,7 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                 child: TextButton(
                   onPressed: () {
                     navigatedto = 'settings';
-                    Navigator.pushNamed(context, 'Firebasecard');
+                    // Navigator.pushNamed(context, 'Firebasecard');
                   },
                   child: Container(
                     child: Row(

@@ -7,6 +7,7 @@ import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/weightcard.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/DashBoard/generaterepo.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
@@ -22,7 +23,7 @@ class getweightdata extends StatefulWidget {
 }
 
 class _getweightdataState extends State<getweightdata> {
-  var nametest;
+  var nulltest;
   var mainboard = doctoraccessgetusersehatid == null
       ? FirebaseFirestore.instance
           .collection('User')
@@ -36,14 +37,24 @@ class _getweightdataState extends State<getweightdata> {
           .collection('MainUser')
           .doc('Dashboard')
           .collection('Weight');
-  var family = FirebaseFirestore.instance
-      .collection('User')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Family member')
-      .doc(membername)
-      .collection('Dashboard')
-      .doc('path')
-      .collection('Weight');
+  var family = doctoraccessgetusersehatid == null
+      ? FirebaseFirestore.instance
+          .collection('User')
+          .doc(universalsehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Weight')
+      : FirebaseFirestore.instance
+          .collection('User')
+          .doc(doctoraccessgetusersehatid)
+          .collection('Family member')
+          .doc(membername)
+          .collection('Dashboard')
+          .doc('path')
+          .collection('Weight');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +70,7 @@ class _getweightdataState extends State<getweightdata> {
             final _date = (st.data()! as Map<String, dynamic>)['Date'];
             final _time = (st.data()! as Map<String, dynamic>)['Time'];
 
-            nametest = _weight;
+            nulltest = _date;
             final datas = buildTile(
               _weight,
               _date,
@@ -67,13 +78,39 @@ class _getweightdataState extends State<getweightdata> {
             );
             servicesWidget.add(datas);
           }
-          if (nametest == null)
+          double rows = servicesWidget.length / 2;
+          if (servicesWidget.length != 0 &&
+              servicesWidget.length != 1 &&
+              servicesWidget.length % 2 == 0) {
+            weightwidgetsnum = rows * 80;
+          } else if (servicesWidget.length == 1) {
+            weightwidgetsnum = 80;
+          } else if (servicesWidget.length == 0 ||
+              servicesWidget.length == null) {
+            weightwidgetsnum = 1;
+          } else {
+            weightwidgetsnum = (rows + 0.5) * 80;
+          }
+          if (nulltest == null) {
             return Center(child: Text("Click Add (+) to enter your Weight."));
-          return ListView(
-            clipBehavior: Clip.none,
-            children: servicesWidget,
-            shrinkWrap: true,
-          );
+          }
+          if (generaterepo == false) {
+            return ListView(
+              clipBehavior: Clip.antiAlias,
+              children: servicesWidget,
+              shrinkWrap: true,
+            );
+          } else {
+            return GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 0,
+              childAspectRatio: 2 / 0.7,
+              mainAxisSpacing: 0,
+              crossAxisCount: 2,
+              children: servicesWidget,
+              shrinkWrap: true,
+            );
+          }
         }
         return Center(child: CircularProgressIndicator.adaptive());
       },
@@ -81,10 +118,47 @@ class _getweightdataState extends State<getweightdata> {
   }
 
   buildTile(weight, date, time) {
-    return Weightcard(
-      date: date,
-      time: time,
-      weight: weight,
-    );
+    if (generaterepo == false) {
+      return Weightcard(
+        date: date,
+        time: time,
+        weight: weight,
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "$date",
+                style: TextStyle(color: Colors.grey),
+              ),
+              Text(
+                "$time",
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Weight : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$weight Kg",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }

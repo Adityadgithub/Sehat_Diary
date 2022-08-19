@@ -7,6 +7,7 @@ import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 import 'package:firebasetut/pages/DashBoard/Medicine/medicinecard.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/DashBoard/generaterepo.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
@@ -20,6 +21,8 @@ class getmedicinedata extends StatefulWidget {
   @override
   State<getmedicinedata> createState() => _getmedicinedataState();
 }
+
+
 
 class _getmedicinedataState extends State<getmedicinedata> {
   var nametest;
@@ -54,6 +57,7 @@ class _getmedicinedataState extends State<getmedicinedata> {
           .collection('Dashboard')
           .doc('path')
           .collection('Medicine');
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,14 +97,40 @@ class _getmedicinedataState extends State<getmedicinedata> {
                   enddate: _enddate);
               servicesWidget.add(datas);
             }
-            if (nametest == null)
+
+            double rows = servicesWidget.length / 2;
+            if (servicesWidget.length != 0 &&
+                servicesWidget.length != 1 &&
+                servicesWidget.length % 2 == 0) {
+              medwidgetsnum = rows * 180;
+            } else if (servicesWidget.length == 1) {
+              medwidgetsnum = 180;
+            } else if (servicesWidget.length == 0 ||
+                servicesWidget.length == null) {
+              medwidgetsnum = 1;
+            } else {
+              medwidgetsnum = (rows + 0.5) * 120;
+            }
+            if (nametest == null && generaterepo == false)
               return Center(
                   child: Text("Click Add (+) to enter your medicines."));
-            return ListView(
-              clipBehavior: Clip.none,
-              children: servicesWidget,
-              shrinkWrap: true,
-            );
+            if (generaterepo == false) {
+              return ListView(
+                clipBehavior: Clip.antiAlias,
+                children: servicesWidget,
+                shrinkWrap: true,
+              );
+            } else {
+              return GridView.count(
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 0,
+                childAspectRatio: 2 / 1.9,
+                mainAxisSpacing: 0,
+                crossAxisCount: 2,
+                children: servicesWidget,
+                shrinkWrap: true,
+              );
+            }
           }
           return Center(child: CircularProgressIndicator.adaptive());
         },
@@ -119,15 +149,124 @@ class _getmedicinedataState extends State<getmedicinedata> {
     date,
     time,
   }) {
-    return Medicinecard(
-        date: date,
-        time: time,
-        medname: medname,
-        medtype: medtype,
-        quantity: quantity,
-        nooftimes: nooftimes,
-        freq: freq,
-        startdate: startdate,
-        enddate: enddate);
+    if (generaterepo == false) {
+      return Medicinecard(
+          date: date,
+          time: time,
+          medname: medname,
+          medtype: medtype,
+          quantity: quantity,
+          nooftimes: nooftimes,
+          freq: freq,
+          startdate: startdate,
+          enddate: enddate);
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "$date",
+                style: TextStyle(color: Colors.grey),
+              ),
+              Text(
+                "$time",
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Medicine : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$medname",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Type : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$medtype",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Quantity : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$quantity",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "No. of times : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$nooftimes",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Frequency : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$freq",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Start Date : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$startdate",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "End Date : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$enddate",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }

@@ -423,7 +423,7 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
 
                           result = store
                               .collection('User')
-                              .doc(sehatid)
+                              .doc(universalsehatid)
                               .collection('Family member')
                               .doc(membername)
                               .set({

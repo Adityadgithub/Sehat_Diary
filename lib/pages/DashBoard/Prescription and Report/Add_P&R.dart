@@ -75,9 +75,6 @@ class _AddPnRState extends State<AddPnR> {
   File? prescameraimages;
   PlatformFile? presgallaryimages;
 
-  File? reportcameraimages;
-  PlatformFile? reportgallaryimages;
-
   var presimagedone;
 
   var repoimagedone;
@@ -85,6 +82,9 @@ class _AddPnRState extends State<AddPnR> {
   UploadTask? presuploadtask;
 
   var presurlDownlad;
+
+  File? reportcameraimages;
+  PlatformFile? reportgallaryimages;
 
   UploadTask? reportuploadtask;
 

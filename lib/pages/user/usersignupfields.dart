@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/common/login.dart';
 import 'package:firebasetut/pages/common/signup.dart';
 
 import 'package:firebasetut/select_title/Select_title.dart';
@@ -525,7 +526,7 @@ class _UserSignupFieldsState extends State<UserSignupFields> {
                                       .then((value) {
                                     sehatid =
                                         '''SID${RandomStringGenerator(alphaCase: AlphaCase.UPPERCASE_ONLY, hasAlpha: true, hasDigits: true, fixedLength: 10, hasSymbols: false).generate()}''';
-
+                                    loginpressed == false;
                                     final result = store
                                         .collection('User')
                                         .doc(sehatid)
@@ -544,7 +545,8 @@ class _UserSignupFieldsState extends State<UserSignupFields> {
                                   }).then((value) {
                                     store
                                         .collection('User')
-                                        .doc('clonedataforlogin')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
                                         .collection('MainUser')
                                         .add({
                                       'Image': profileurlDownlad,

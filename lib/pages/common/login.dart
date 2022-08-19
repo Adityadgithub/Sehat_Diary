@@ -25,6 +25,8 @@ class _loginState extends State<login> {
   var _error;
   late Timer _timer;
 
+  bool? _erroris = false;
+
   @override
   void initState() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -34,8 +36,14 @@ class _loginState extends State<login> {
   }
 
   bool validator() {
-    if (formkey.currentState!.validate()) {
-      return true;
+    if (_error == null) {
+      if (formkey.currentState!.validate()) {
+        return true;
+      }
+    } else {
+      setState(() {
+        _erroris = true;
+      });
     }
     return false;
   }
@@ -313,7 +321,7 @@ class _loginState extends State<login> {
   //   return user != null ? Users(user.uid) : null;
   // }
   Widget showAlert() {
-    if (_error != null) {
+    if (_erroris == true) {
       return Container(
         color: Colors.amberAccent,
         width: double.infinity,

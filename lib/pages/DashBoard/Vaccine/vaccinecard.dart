@@ -1,50 +1,33 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PnRcard extends StatefulWidget {
+class Vaccinecard extends StatefulWidget {
   var date;
   var time;
-  var docname;
-  var docmobile;
-  var pres;
-  var report;
+  var vaccine_type;
+  var vaccine;
+  var certificate;
 
-  PnRcard(
+  Vaccinecard(
       {this.date,
       this.time,
-      this.docname,
-      this.docmobile,
-      this.pres,
-      this.report});
+      this.vaccine_type,
+      this.vaccine,
+      this.certificate});
 
   @override
-  State<PnRcard> createState() => _PnRcardState(
-        docname: docname,
-        docmobile: docmobile,
-        pres: pres,
-        report: report,
-        date: date,
-        time: time,
-      );
+  State<Vaccinecard> createState() =>
+      __VaccinecardState(date, time, vaccine_type, vaccine, certificate);
 }
 
-class _PnRcardState extends State<PnRcard> {
+class __VaccinecardState extends State<Vaccinecard> {
   var date;
   var time;
-  var docname;
-  var docmobile;
-  var pres;
-  var report;
-
-  _PnRcardState(
-      {this.date,
-      this.time,
-      this.docname,
-      this.docmobile,
-      this.pres,
-      this.report});
+  var vaccine_type;
+  var vaccine;
+  var certificate;
+  __VaccinecardState(
+      this.date, this.time, this.vaccine_type, this.vaccine, this.certificate);
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +77,11 @@ class _PnRcardState extends State<PnRcard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Doctor: ',
+                              'Category: ',
                               style: TextStyle(fontSize: 15),
                             ),
                             Text(
-                              '$docname',
+                              '$vaccine_type Vaccine',
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.bold),
                             ),
@@ -107,14 +90,14 @@ class _PnRcardState extends State<PnRcard> {
                         SizedBox(
                           height: 15,
                         ),
-                        if (docmobile != null)
+                        if (vaccine != null)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Contact: ', style: TextStyle(fontSize: 15)),
+                              Text('Vaccine: ', style: TextStyle(fontSize: 15)),
                               Text(
-                                '+91 $docmobile',
+                                '$vaccine',
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
@@ -132,7 +115,7 @@ class _PnRcardState extends State<PnRcard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (pres != null)
+                if (certificate != null)
                   Container(
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.black, width: 1),
@@ -156,14 +139,14 @@ class _PnRcardState extends State<PnRcard> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text("Prescription",
+                                        child: Text("Vaccine Certificate",
                                             style: TextStyle(fontSize: 25)),
                                       ),
                                       SizedBox(
                                         height: 15,
                                       ),
                                       Image.network(
-                                        pres,
+                                        certificate,
                                       ),
                                     ],
                                   ),
@@ -172,51 +155,7 @@ class _PnRcardState extends State<PnRcard> {
                             );
                           },
                           child: Text(
-                            "Prescription",
-                            style: TextStyle(),
-                          ))),
-                SizedBox(width: 30),
-                if (report != null)
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  // image: DecorationImage(
-                                  //     image: Image.file(File(report))
-                                  //         .image)),),
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("Report",
-                                            style: TextStyle(fontSize: 25)),
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Image.network(
-                                        report,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Report",
+                            "Certificate",
                             style: TextStyle(),
                           ))),
               ],

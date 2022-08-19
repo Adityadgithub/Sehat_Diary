@@ -7,6 +7,7 @@ import 'package:firebasetut/pages/DashBoard/Log%20Sugar/Sugar.dart';
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/sugarcard.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasetut/pages/DashBoard/generaterepo.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
@@ -72,7 +73,8 @@ class _getbpdataState extends State<getbpdata> {
             final _date = (st.data()! as Map<String, dynamic>)['Date'];
             final _time = (st.data()! as Map<String, dynamic>)['Time'];
 
-            nulltest = _systolic;
+            nulltest = _date;
+
             final datas = buildTile(
               _systolic,
               _diastolic,
@@ -82,14 +84,40 @@ class _getbpdataState extends State<getbpdata> {
             );
             servicesWidget.add(datas);
           }
-          if (nulltest == null)
+
+          double rows = servicesWidget.length / 2;
+          if (servicesWidget.length != 0 &&
+              servicesWidget.length != 1 &&
+              servicesWidget.length % 2 == 0) {
+            bpwidgetsnum = rows * 120;
+          } else if (servicesWidget.length == 1) {
+            bpwidgetsnum = 120;
+          } else if (servicesWidget.length == 0 ||
+              servicesWidget.length == null) {
+            bpwidgetsnum = 1;
+          } else {
+            bpwidgetsnum = (rows + 0.5) * 120;
+          }
+          if (nulltest == null && generaterepo == false)
             return Center(
                 child: Text("Click Add (+) to enter your sugar levels."));
-          return ListView(
-            clipBehavior: Clip.none,
-            children: servicesWidget,
-            shrinkWrap: true,
-          );
+          if (generaterepo == false) {
+            return ListView(
+              clipBehavior: Clip.antiAlias,
+              children: servicesWidget,
+              shrinkWrap: true,
+            );
+          } else {
+            return GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 0,
+              childAspectRatio: 2 / 1.3,
+              mainAxisSpacing: 0,
+              crossAxisCount: 2,
+              children: servicesWidget,
+              shrinkWrap: true,
+            );
+          }
         }
         return Center(child: CircularProgressIndicator.adaptive());
       },
@@ -103,12 +131,86 @@ class _getbpdataState extends State<getbpdata> {
     date,
     time,
   ) {
-    return bpcard(
-      systolic: systolic,
-      diastolic: diastolic,
-      pulse: pulse,
-      date: date,
-      time: time,
-    );
+    // return bpcard(
+    //   systolic: systolic,
+    //   diastolic: diastolic,
+    //   pulse: pulse,
+    //   date: date,
+    //   time: time,
+    // );
+    if (generaterepo == false) {
+      return bpcard(
+        systolic: systolic,
+        diastolic: diastolic,
+        pulse: pulse,
+        date: date,
+        time: time,
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "$date",
+                style: TextStyle(color: Colors.grey),
+              ),
+              Text(
+                "$time",
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Systolic : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$systolic mmHg",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Text(
+                "Diastolic : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$diastolic mmHg",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Text(
+                "Pulse : ",
+                style: TextStyle(color: Colors.cyan[900], fontSize: 14),
+              ),
+              Text(
+                "$pulse bpm",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
   }
 }

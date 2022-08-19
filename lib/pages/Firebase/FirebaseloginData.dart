@@ -23,6 +23,10 @@ var universalimagefordrawer;
 var universalnamefordrawer;
 var universalsehatid;
 var universalcontactnumber;
+var universaldob;
+var universalemail;
+var universalbloodgrp;
+var universalgender;
 
 class _FirebasecardState extends State<Firebasecard> {
   var datas;
@@ -37,8 +41,9 @@ class _FirebasecardState extends State<Firebasecard> {
           .collection('MainUser')
       : FirebaseFirestore.instance
           .collection('User')
-          .doc('clonedataforlogin')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('MainUser');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +106,10 @@ class _FirebasecardState extends State<Firebasecard> {
               universalimagefordrawer = _image;
               universalsehatid = _sehatid;
               universalcontactnumber = _contactnumber;
+              universalemail = _email;
+              universaldob = _dob;
+              universalgender = _gender;
+              universalbloodgrp = _bloodgroup;
               datas = builduserpage(
                 _image,
                 _sehatid,

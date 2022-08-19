@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/AddBp.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/BloodPressure.dart';
@@ -16,10 +18,14 @@ import 'package:firebasetut/pages/DashBoard/Medicine/getmedicinedata.dart';
 import 'package:firebasetut/pages/DashBoard/Prescription%20and%20Report/Add_P&R.dart';
 import 'package:firebasetut/pages/DashBoard/Prescription%20and%20Report/P&R.dart';
 import 'package:firebasetut/pages/DashBoard/Prescription%20and%20Report/getp&rdata.dart';
+import 'package:firebasetut/pages/DashBoard/Vaccine/Add_vaccine.dart';
+import 'package:firebasetut/pages/DashBoard/Vaccine/Vaccine.dart';
+import 'package:firebasetut/pages/DashBoard/Vaccine/getvaccinedata.dart';
 
 import 'package:firebasetut/pages/DashBoard/Weight/Add_Weight.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/Weight.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
+import 'package:firebasetut/pages/DashBoard/generaterepo.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 
 import 'package:firebasetut/pages/common/login.dart';
@@ -38,6 +44,7 @@ import 'package:firebasetut/pages/user/addmember/addmemsignupfields.dart';
 import 'package:firebasetut/pages/user/usersignupfields.dart';
 import 'package:firebasetut/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'select_title/Select_title.dart';
 
@@ -45,6 +52,8 @@ void main() async {
   //Initializing Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // debugRepaintRainbowEnabled = true;
 
   //Running Root Widget
   runApp(MyApp());
@@ -81,6 +90,7 @@ class _MyAppState extends State<MyApp> {
         "AddMemberSignuFields": (context) => AddMemberSignuFields(),
         "Selecttitle": (context) => Selecttitle(),
         "Dashboard": (context) => Dashboard(),
+        "GenerateRepo": (context) => GenerateRepo(),
         "Sugar": (context) => Sugar(),
         "AddSugar": (context) => AddSugar(),
         "getsugardata": (context) => getsugardata(),
@@ -99,6 +109,9 @@ class _MyAppState extends State<MyApp> {
         "AddHeart": (context) => AddHeart(),
         "HeartRate": (context) => HeartRate(),
         "getheartdata": (context) => getheartdata(),
+        "AddVaccine": (context) => AddVaccine(),
+        "Vaccine": (context) => Vaccine(),
+        "getvaccinedata": (context) => getvaccinedata(),
       },
     );
   }

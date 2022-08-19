@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/user/userprofilefields.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -115,7 +116,7 @@ class _addcontactsState extends State<addcontacts> {
                           if (value!.isEmpty) {
                             return "Field can't be empty";
                           }
-                          if (value!.length > 3) {
+                          if (value.length > 3) {
                             return "value should be less than or equal to 3 digit";
                           }
 
@@ -182,7 +183,7 @@ class _addcontactsState extends State<addcontacts> {
                           try {
                             FirebaseFirestore.instance
                                 .collection('User')
-                                .doc(usersehatidafterlogin)
+                                .doc(universalsehatid)
                                 .collection('MainUser')
                                 .doc('emergency')
                                 .collection('contacts')
