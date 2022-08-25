@@ -1,3 +1,7 @@
+//Following code is responsible to show a drawer in left side of the screen
+//which will include button for every specific feature in the app.
+//The button have conditons to show differently in user's flow and doctor's flow.
+
 import 'package:firebasetut/pages/DashBoard/Dashboard.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +31,7 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //
               Container(
                   alignment: Alignment.bottomLeft,
                   width: MediaQuery.of(context).size.width,
@@ -39,8 +44,11 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                         SizedBox(
                           height: 15,
                         ),
+
+                        //Profile image widgets for 2 different situations. No image, Uploading image and after uploading image completely.
                         Row(
                           children: [
+                            //Situation 1 : No image data
                             if (drawerimage == null)
                               CircleAvatar(
                                   backgroundColor: Colors.black,
@@ -49,12 +57,16 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                                     Icons.person,
                                     size: 30,
                                   )),
+
+                            //Situation 1 : Image data fetched
                             if (drawerimage != null)
                               CircleAvatar(
                                 radius: 30,
                                 backgroundImage: NetworkImage("$drawerimage"),
                               ),
                             SizedBox(width: 20),
+
+                            //Display User's/Doctor's name
                             loginas == 'Doctor'
                                 ? Text(
                                     "Dr. $drawerusername",
@@ -72,6 +84,9 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                                   ),
                           ],
                         ),
+
+                        //Button to navigate to Multiple Profile page.
+                        //This will display only if current flow is User.
                         if (loginas == 'User')
                           Padding(
                             padding: const EdgeInsets.only(top: 25.0),
@@ -99,6 +114,8 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                   ),
                   color: Colors.blue),
               SizedBox(height: 20),
+
+              //Button to navigate to Profile page.
               Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,
@@ -123,6 +140,9 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                   ),
                 ),
               ),
+
+              //Button to navigate to SearchPatient page.
+              //This will display only if current flow is Doctor.
               if (loginas == 'Doctor')
                 Padding(
                   padding: const EdgeInsets.only(
@@ -150,6 +170,9 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                     ),
                   ),
                 ),
+
+              //Button to navigate to Dashboard page.
+              //This will display only if current flow is User.
               if (loginas == 'User')
                 Padding(
                   padding: const EdgeInsets.only(
@@ -174,6 +197,9 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                     ),
                   ),
                 ),
+
+              //Button to navigate to insurance page.
+              //This will display only if current flow is User.
               if (loginas == 'User')
                 Padding(
                   padding: const EdgeInsets.only(
@@ -182,7 +208,34 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, 'Emergency');
+                      Navigator.pushNamed(context, 'insurance');
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(Icons.note, color: Colors.black),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Insurance",
+                              style: TextStyle(color: Colors.black))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              //Button to navigate to Emergency page.
+              //This will display only if current flow is User.
+              if (loginas == 'User')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                    bottom: 20,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'Emergency');
                     },
                     child: Container(
                       child: Row(
@@ -198,6 +251,35 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                     ),
                   ),
                 ),
+
+              //Button to navigate to SehatGyan page.
+              //This will display only if current flow is User.
+              if (loginas == 'User')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                    bottom: 20,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'sehatgyan');
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(Icons.video_collection, color: Colors.black),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Sehat Gyan",
+                              style: TextStyle(color: Colors.black))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              //Button to navigate to AboutUs page.
               Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,
@@ -220,6 +302,8 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                   ),
                 ),
               ),
+
+              //Button to navigate to Settings page.
               Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,
@@ -246,6 +330,8 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                   ),
                 ),
               ),
+
+              //Button to Signout and navigate to Login page.
               Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,

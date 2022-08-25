@@ -1,3 +1,6 @@
+// Following is a common code to call Signup fields of either
+// user or doctor.
+
 import 'dart:io';
 import 'dart:async';
 import 'package:firebasetut/pages/doctor/doctorsignupfields.dart';
@@ -21,13 +24,13 @@ class _SignUpState extends State<SignUp> {
 //this function will reload the state every second.
 //it is required to update the profile image once uploaded.
 //Else the Icon will keep showing CircularProgressIndicator (loading icon).
-  // @override
-  // void initState() {
-  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-  //     setState(() {});
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

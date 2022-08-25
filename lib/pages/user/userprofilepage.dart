@@ -1,3 +1,5 @@
+//Following code is responsible to fetch and display user's credentilas respectively.
+
 import 'dart:convert';
 import 'dart:ui';
 
@@ -66,14 +68,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
     this.Fieldcontactnumber,
   });
 
-  // var firestorename;
-
   var MyName;
 
-  // _fetch() async {
-
-  // }
-
+  //Function to - Ensure Connection with Firebase, and support FutureBuilder.
   getData() async {
     final firebaseuser = await FirebaseAuth.instance.currentUser;
     if (firebaseuser != null) {
@@ -105,23 +102,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
           title: Text("My Profile",
               style:
                   TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-          // title: FutureBuilder(
-          //   future: getData(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.connectionState == ConnectionState.done) {
-          //       return Text("My Profile",
-          //           style: TextStyle(
-          //               color: Colors.blue, fontWeight: FontWeight.bold));
-          //     } else {
-          //       return CircularProgressIndicator();
-          //     }
-          //   },
-          // ),
         ),
         body: FutureBuilder(
           future: getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              //This will Call the mentioned widget while sending all the values as Arguments.
               return UserProfileFields(
                   FieldImage: FieldImage,
                   Fieldsehatid: Fieldsehatid,
@@ -132,7 +118,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   Fieldbloodgroup: Fieldbloodgroup,
                   Fielddob: Fielddob,
                   Fieldgender: Fieldgender);
-            } else {
+            }
+
+            //If the connection is not yet made then a progress indicator will be shown.
+            else {
               return Center(child: CircularProgressIndicator());
             }
           },

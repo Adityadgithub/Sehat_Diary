@@ -1,3 +1,6 @@
+// this Code is responsible to Connect to firebase and
+// search for the user with their sehat-id.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/common/drawerwidgets.dart';
@@ -94,6 +97,8 @@ class _SearchPatientState extends State<SearchPatient> {
                             value: usertypeitem, child: Text(usertypeitem)))
                         .toList()),
               ),
+
+              //Widget to - Connect to firebase and search for the user
               GetBuilder<DataController>(
                 init: DataController(),
                 builder: (val) {
@@ -112,6 +117,7 @@ class _SearchPatientState extends State<SearchPatient> {
                 },
               ),
             ],
+            //Widget to - Type the user's sehat-id.
             title: TextFormField(
               decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
@@ -123,11 +129,14 @@ class _SearchPatientState extends State<SearchPatient> {
               controller: searchcontroller,
             ),
           ),
+
+          //Widget to - Call searchdata class
           body: isexecuted == true ? searchedData() : SizedBox()),
     );
   }
 }
 
+//Widget to - Perform search in the location specified in Firebase.
 class DataController extends GetxController {
   var document;
 

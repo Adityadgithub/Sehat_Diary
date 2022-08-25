@@ -1,3 +1,5 @@
+//Following code is resposible to Fetch all the data which was stored while signup.
+
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +21,8 @@ class Firebasecard extends StatefulWidget {
   State<Firebasecard> createState() => _FirebasecardState();
 }
 
+//These variables conatain the same data but will be used in different global widgets,
+//this makes it easier to get data without calling the class again.
 var universalimagefordrawer;
 var universalnamefordrawer;
 var universalsehatid;
@@ -30,10 +34,14 @@ var universalgender;
 
 class _FirebasecardState extends State<Firebasecard> {
   var datas;
+
+  //Data locations
+  //for doctor
   var doctordata = FirebaseFirestore.instance
       .collection(loginas!)
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('MainUser');
+  //for user
   var userdata = loginpressed == false
       ? FirebaseFirestore.instance
           .collection('User')
@@ -47,33 +55,62 @@ class _FirebasecardState extends State<Firebasecard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+        //Widget to - Connect to firebase with assigned location and fetch the respected data.
         body: StreamBuilder<QuerySnapshot>(
+      //assign location according to loginas condition
       stream: loginas == 'User' ? userdata.snapshots() : doctordata.snapshots(),
+
       builder: (context, snapshot) {
+        //check connection
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
           List<Widget> servicesWidget = [];
+
+          //fetch data for doctor
           if (loginas == 'Doctor') {
             for (var st in services) {
+              //profile photo
               final _image = (st.data()! as Map<String, dynamic>)['Image'];
 
+              //name
               final _name = (st.data()! as Map<String, dynamic>)['Name'];
+
+              //Email address
               final _email = (st.data()! as Map<String, dynamic>)['Email'];
+
+              //Password
               final _password =
                   (st.data()! as Map<String, dynamic>)['password'];
+
+              //Hospital Name
               final _hospitalname =
                   (st.data()! as Map<String, dynamic>)['Hospital Name'];
+
+              //Speciality
               final _speciality =
                   (st.data()! as Map<String, dynamic>)['Speciality'];
+
+              //Degree
               final _degree = (st.data()! as Map<String, dynamic>)['Degree'];
+
+              //Address
               final _address = (st.data()! as Map<String, dynamic>)['Address'];
+
+              //Contact Number
               final _contactnumber =
                   (st.data()! as Map<String, dynamic>)['Contact Number'];
+
+              //License number
               final _licensenum =
                   (st.data()! as Map<String, dynamic>)['License Number'];
+
+              //assign values
               universalnamefordrawer = _name;
               universalimagefordrawer = _image;
               print(_name);
+
+              // assigning function call with all data as arguments.
               datas = builddoctorpage(
                 image: _image,
                 name: _name,
@@ -88,18 +125,36 @@ class _FirebasecardState extends State<Firebasecard> {
               );
             }
             servicesWidget.add(datas);
-          } else if (loginas == 'User') {
+          }
+
+          //Fetch data for User
+          else if (loginas == 'User') {
             for (var st in services) {
+              //profile photo
               final _image = (st.data()! as Map<String, dynamic>)['Image'];
               final _sehatid = (st.data()! as Map<String, dynamic>)['SehatId'];
+
+              //name
               final _name = (st.data()! as Map<String, dynamic>)['Name'];
+
+              //Email address
               final _email = (st.data()! as Map<String, dynamic>)['Email'];
+
+              //Password
               final _password =
                   (st.data()! as Map<String, dynamic>)['Password'];
+
+              //Contact number
               final _contactnumber =
                   (st.data()! as Map<String, dynamic>)['Contact Number'];
+
+              //date of birth
               final _dob = (st.data()! as Map<String, dynamic>)['Dob'];
+
+              //Gender
               final _gender = (st.data()! as Map<String, dynamic>)['Gender'];
+
+              //BloodGroup
               final _bloodgroup =
                   (st.data()! as Map<String, dynamic>)['Blood Group'];
               universalnamefordrawer = _name;
@@ -110,6 +165,8 @@ class _FirebasecardState extends State<Firebasecard> {
               universaldob = _dob;
               universalgender = _gender;
               universalbloodgrp = _bloodgroup;
+
+              // assigning function call with all data as arguments.
               datas = builduserpage(
                 _image,
                 _sehatid,
@@ -131,6 +188,7 @@ class _FirebasecardState extends State<Firebasecard> {
     ));
   }
 
+  //Function to - call doctorprofilepage and pass data as arguments.
   builddoctorpage({
     image,
     name,
@@ -157,6 +215,7 @@ class _FirebasecardState extends State<Firebasecard> {
     );
   }
 
+  //Function to - call UserProfilePage and pass data as arguments.
   builduserpage(
     image,
     sehatid,

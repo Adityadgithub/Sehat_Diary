@@ -1,3 +1,7 @@
+// This code is responsible to perform SOS operation.
+// It will add contacts and will send an emergency message with
+// user's name, contact number aned current Location.
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,15 +20,18 @@ class Emergency extends StatefulWidget {
   State<Emergency> createState() => _EmergencyState();
 }
 
+//check button status.
 bool Emergencypressed = false;
 
+//get contatcts.
 List<String> recipents = [];
 
 class _EmergencyState extends State<Emergency> {
   Timer? _timer;
   Position? position;
-
   bool cooldownover = false;
+
+  //Function to - Send Sms with all credentials.
   Future _sendSMS(String message, List<String> recipents) async {
     var _result =
         await sendSMS(message: message, recipients: recipents, sendDirect: true)
@@ -34,6 +41,7 @@ class _EmergencyState extends State<Emergency> {
     return print('BAE $_result');
   }
 
+  //Function to - Get user's current location.
   Future getlocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -47,6 +55,7 @@ class _EmergencyState extends State<Emergency> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        //back button
         leading: IconButton(
           onPressed: () {
             Navigator.pushNamed(context, 'Firebasecard');
@@ -56,6 +65,7 @@ class _EmergencyState extends State<Emergency> {
             color: Colors.blue,
           ),
         ),
+
         iconTheme: IconThemeData(color: Colors.blue),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -69,6 +79,8 @@ class _EmergencyState extends State<Emergency> {
             Center(
               child: Stack(alignment: Alignment.center, children: [
                 if (Emergencypressed == true && cooldownover == true)
+
+                  // Text Widget. This will display if SOS is active
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -87,47 +99,59 @@ class _EmergencyState extends State<Emergency> {
                           ),
                         )
                       ]),
+
+                // Text Widget. will display if SOS is active or inactive respectively.
                 Padding(
                   padding: const EdgeInsets.only(bottom: 100.0),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //Scenario 1: SOS is inactive
                         if (Emergencypressed == false && cooldownover == false)
                           Text(
                             "PRESS THE BUTTON IN CASE OF EMERGENCY",
                             style: TextStyle(color: Colors.grey),
                           ),
+
+                        //Scenario 2: SOS is iactive
                         if (Emergencypressed == true && cooldownover == true)
                           Text(
                             "PRESS THE BUTTON IF YOUR PROBLEM IS SOLVED",
                             style: TextStyle(color: Colors.grey),
                           ),
+
+                        //Scenario 3: SOS is pressed and Cooldown is loaded for 5 sec
                         if (Emergencypressed == true && cooldownover == false)
                           Text(
                             "PLEASE WAIT...",
                             style: TextStyle(color: Colors.grey),
                           ),
                         SizedBox(height: 15),
+
+                        //The Main SOS button, this will call all function onces pressed.
                         if (Emergencypressed == false)
                           TextButton(
                               onPressed: () async {
+                                // Updating variables and state.
                                 setState(() {
                                   cooldownover = false;
                                   Emergencypressed = true;
                                 });
 
+                                // function call to get location
                                 await getlocation();
 
                                 print('MCC $recipents');
-                                String message =
-                                    '''HELP! IT'S AN EMERGENCY
+
+                                //Message to send
+                                String message = '''HELP! IT'S AN EMERGENCY
 Please contact to Mr. $universalnamefordrawer, they need help ASAP.
 
 their contact number : +91$universalcontactnumber
 Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.longitude}
 ''';
-
+                                // function call to send message
                                 await _sendSMS(message, recipents);
                               },
                               style: ButtonStyle(
@@ -147,30 +171,14 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                                       fontSize: 25, color: Colors.white),
                                 ),
                               )),
-                        if (Emergencypressed == true && cooldownover == false)
-                          // CircularCountDownTimer(
-                          //   width: MediaQuery.of(context).size.width / 2,
-                          //   height: MediaQuery.of(context).size.height / 2,
-                          //   duration: 5,
-                          //   fillColor: Color(0xFFFFC107),
-                          //   ringColor: Colors.black,
-                          //   controller: _controller,
-                          //   backgroundColor: Colors.white54,
-                          //   strokeWidth: 10.0,
-                          //   strokeCap: StrokeCap.round,
-                          //   isTimerTextShown: true,
-                          //   isReverse: false,
-                          //   onComplete: () {},
-                          //   textStyle:
-                          //       TextStyle(fontSize: 50.0, color: Colors.black),
-                          // ),
 
+                        //Widget to - Display 5sec Countdown onces SOS is pressed
+                        if (Emergencypressed == true && cooldownover == false)
                           CircularCountDownTimer(
                             // Countdown duration in Seconds.
                             duration: 5,
 
                             key: UniqueKey(),
-                            // Countdown initial elapsed Duration in Seconds.
 
                             // Controls (i.e Start, Pause, Resume, Restart) the Countdown Timer.
                             controller: _controller,
@@ -224,20 +232,14 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                             // Handles visibility of the Countdown Text.
                             isTimerTextShown: true,
 
-                            // Handles the timer start.
-
-                            // This Callback will execute when the Countdown Starts.
-
-                            // This Callback will execute when the Countdown Ends.
                             onComplete: () {
-                              // Here, do whatever you want
                               setState(() {
                                 cooldownover = true;
                               });
                             },
-
-                            // This Callback will execute when the Countdown Changes.
                           ),
+
+                        //Widget Button to inactivate SOS and reset values
                         if (Emergencypressed == true && cooldownover == true)
                           TextButton(
                             onPressed: () {
@@ -266,11 +268,14 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                     ),
                   ),
                 ),
+
+                //Widgets that will display according to different Situations.
                 Padding(
                   padding: const EdgeInsets.only(bottom: 50.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      //Text Widget
                       Row(
                         children: [
                           Text(
@@ -288,12 +293,16 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Emergencypressed == false
-                                  ? Text(
+                                  ?
+                                  // Scenario 1: if SOS is inactive
+                                  Text(
                                       "Inactive",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 18),
                                     )
-                                  : Text(
+                                  :
+                                  // Scenario 2: if SOS is active
+                                  Text(
                                       "Active",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 18),
@@ -303,6 +312,8 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                         ],
                       ),
                       SizedBox(height: 25),
+
+                      //Widget to navigate to contact page.
                       if (Emergencypressed == false)
                         Container(
                             decoration: BoxDecoration(
@@ -335,20 +346,5 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
         ),
       ),
     ));
-  }
-
-  Widget _button({required String title, VoidCallback? onPressed}) {
-    return Expanded(
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.purple),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          title,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
   }
 }

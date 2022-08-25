@@ -54,11 +54,13 @@ dependencies:
   flutter_sms: ^2.3.3
   open_file: ^3.1.0
   geocoding: ^2.0.4
+  url_launcher: ^6.1.5
 
   image: ^3.2.0
   screenshot: ^1.2.3  
   circular_countdown_timer: ^0.2.2
   geolocator: ^9.0.1
+  youtube_player_flutter_quill: ^8.2.2
   
 dev_dependencies:
   flutter_test:
@@ -97,7 +99,7 @@ flutter:
     - assets/images/profilepic.jpg
     - assets/images/user3.png
     - assets/images/doctor.png
-    - assets/images/bp.jpg
+   
     - assets/images/medicine.jpg
     - assets/images/sugar.jpg
     - assets/images/weight.png
@@ -106,6 +108,32 @@ flutter:
     - assets/images/vaccine.png
     - assets/images/splashlogo.jpg
     - assets/sounds/through.flac
+
+    - assets/images/insurance/family.png
+    - assets/images/insurance/child.png
+    - assets/images/insurance/health.png
+    - assets/images/insurance/parents.png
+    - assets/images/insurance/life.png
+    - assets/images/insurance/term.png
+    - assets/images/insurance/medical.png
+
+    - assets/images/insurance/bg/bg6.png
+    - assets/images/insurance/bg/insurancebg.png
+    - assets/images/insurance/bg/insurancebg1.png
+    - assets/images/insurance/bg/insurancebg2.png
+    - assets/images/insurance/bg/insurancebg3.png
+
+
+    - assets/images/insurance/bg/companies/care.png
+    - assets/images/insurance/bg/companies/adityabirla.png
+    - assets/images/insurance/bg/companies/bluestar.png
+    - assets/images/insurance/bg/companies/care.png
+    - assets/images/insurance/bg/companies/Nivia.png
+    - assets/images/insurance/bg/companies/sbi.png
+    
+    - assets/images/sehatgyan/sehatgyan.png
+
+
 
 
     

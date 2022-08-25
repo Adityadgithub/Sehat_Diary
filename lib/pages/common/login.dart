@@ -1,12 +1,11 @@
+// This is Code of Login page, It is responsible to
+// get user's email and password then authenticate it with firebase.
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:async';
-
-void main() {
-  runApp(login());
-}
 
 var loginpressed = false;
 
@@ -18,8 +17,8 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  //Field values
   var Email;
-
   var password;
 
   var _error;
@@ -27,6 +26,7 @@ class _loginState extends State<login> {
 
   bool? _erroris = false;
 
+  //Every each second the interface will refresh with this function.
   @override
   void initState() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -35,6 +35,7 @@ class _loginState extends State<login> {
     super.initState();
   }
 
+  //Error validation
   bool validator() {
     if (_error == null) {
       if (formkey.currentState!.validate()) {
@@ -65,6 +66,7 @@ class _loginState extends State<login> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        //Title
                         Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.17,
@@ -77,7 +79,11 @@ class _loginState extends State<login> {
                                     fontWeight: FontWeight.bold)),
                           ),
                         ),
+
+                        //error display (if any)
                         showAlert(),
+
+                        //title icon
                         SizedBox(height: 90),
                         Container(
                           width: MediaQuery.of(context).size.width - 50,
@@ -97,6 +103,8 @@ class _loginState extends State<login> {
                                   ]),
                             ),
                             SizedBox(height: 30),
+
+                            //Widget to - Change User or Doctor mode
                             Row(
                               children: [
                                 Container(
@@ -167,6 +175,8 @@ class _loginState extends State<login> {
                             SizedBox(
                               height: 15,
                             ),
+
+                            //Widget to - Type/Fill Email
                             Container(
                               width: MediaQuery.of(context).size.width,
                               child: TextFormField(
@@ -204,6 +214,8 @@ class _loginState extends State<login> {
                               ),
                             ),
                             SizedBox(height: 15),
+
+                            //Widget to - Type/Fill Password
                             Container(
                               width: MediaQuery.of(context).size.width,
                               child: TextFormField(
@@ -241,6 +253,8 @@ class _loginState extends State<login> {
                               ),
                             ),
                             SizedBox(height: 15),
+
+                            //Widget to - Pass the credentials
                             Container(
                                 height: 40,
                                 width: MediaQuery.of(context).size.width * 0.4,
@@ -282,6 +296,8 @@ class _loginState extends State<login> {
                         SizedBox(
                           height: 15,
                         ),
+
+                        //Widget to - Navigate/Goto Signup page
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -313,13 +329,7 @@ class _loginState extends State<login> {
     );
   }
 
-  // Stream<User?> get userstate {
-  //   return _auth.authStateChanges().map((User? user) => _userfromFirebaseUser(user!));
-  // }
-
-  // Users? _userfromFirebaseUser(User? user) {
-  //   return user != null ? Users(user.uid) : null;
-  // }
+  //Error Showing Widget
   Widget showAlert() {
     if (_erroris == true) {
       return Container(

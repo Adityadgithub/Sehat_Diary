@@ -1,3 +1,5 @@
+// This code is responsible to add contacts in firebase.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -54,12 +56,14 @@ class _addcontactsState extends State<addcontacts> {
                   key: formkey,
                   child: Column(
                     children: [
+                      //Widget to type Name of the SOS contact.
                       TextFormField(
+                        //Validation conditions
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Field can't be empty";
                           }
-                          if (value!.length > 3) {
+                          if (value.length > 3) {
                             return "value should be less than or equal to 3 digit";
                           }
 
@@ -79,6 +83,8 @@ class _addcontactsState extends State<addcontacts> {
                             return "Invalid input, please enter numbers only.";
                           }
                         },
+
+                        //Update value
                         onChanged: (value) {
                           setState(() {
                             contactname = value;
@@ -111,7 +117,10 @@ class _addcontactsState extends State<addcontacts> {
                         ),
                       ),
                       SizedBox(height: 15),
+
+                      //Widget to type SOS contact number.
                       TextFormField(
+                        //Validation Conditions
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Field can't be empty";
@@ -136,6 +145,8 @@ class _addcontactsState extends State<addcontacts> {
                             return "Invalid input, please enter numbers only.";
                           }
                         },
+
+                        //Defining keyboard mode (set to - only numeric)
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           setState(() {
@@ -173,6 +184,8 @@ class _addcontactsState extends State<addcontacts> {
                   ),
                 ),
                 SizedBox(height: 15),
+
+                //Button to Add the data to Firebase.
                 Container(
                   child: Column(
                     children: [

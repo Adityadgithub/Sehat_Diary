@@ -1,3 +1,5 @@
+// Following code is a parent widget to call User Button and Doctor Button Widgets
+
 import '/select_title/doctor_button.dart';
 import '/select_title/user_button.dart';
 import 'package:flutter/material.dart';

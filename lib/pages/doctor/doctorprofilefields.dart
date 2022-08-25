@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-
+//These are all the Field Widget to show the user credentilas from firebase.
 
 class DoctorProfileFields extends StatefulWidget {
   var FieldImage;
@@ -37,7 +37,7 @@ class DoctorProfileFields extends StatefulWidget {
   });
   @override
   State<DoctorProfileFields> createState() => _DoctorProfileFieldsState(
-    FieldImage: FieldImage,
+      FieldImage: FieldImage,
       FieldName: FieldName,
       Fieldaddress: Fieldaddress,
       Fieldcontactnumber: Fieldcontactnumber,
@@ -50,7 +50,6 @@ class DoctorProfileFields extends StatefulWidget {
 }
 
 class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
-
   var FieldImage;
   var FieldName;
   var Fieldemail;
@@ -78,61 +77,44 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
 
   var username;
 
-
-
-
-  // Future getDocId() async {
-  //   try {
-  //     var ds = FirebaseFirestore.instance.collection(loginas!).doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) => username );
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   // .then((snapshot) => snapshot.docs.forEach((element) {
-  //   //       print(element.reference);
-  //   //       docIDs.add(element.reference.id);
-  //   //     }));
-  // }
-
-  // Futureup
-  // Stream<QuerySnapshot> get users {
-  //   return usercollec
-  // }
-
   @override
   Widget build(BuildContext context) {
-
-    
     return SingleChildScrollView(
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(children: [
+            //Widegt to - Show user's profile pic.
+
             Container(
               child: Column(children: [
                 Stack(
                   children: [
-                    if(FieldImage == null)
+                    //Scenario 1 : Photo not uploaded
+                    if (FieldImage == null)
                       CircleAvatar(
                           backgroundColor: Colors.black,
                           radius: 40,
-                          child: Icon(Icons.person,size: 40,)),
-                    if(FieldImage != null)
-                    CircleAvatar(
-                      backgroundColor: Colors.black,
-                      radius: 40,
-                      backgroundImage: NetworkImage('$FieldImage'),
-                      // backgroundImage: AssetImage(
-                      //   "assets/images/profilepic.jpg",
-                      // )\
-                    ),
+                          child: Icon(
+                            Icons.person,
+                            size: 40,
+                          )),
 
+                    //Scenario 2 : Photo uploaded
+                    if (FieldImage != null)
+                      CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 40,
+                        backgroundImage: NetworkImage('$FieldImage'),
+                      ),
                   ],
                 ),
                 SizedBox(height: 15),
+
+                // Field Widget to display Name
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: TextFormField(
-
                     initialValue: FieldName,
                     enableSuggestions: true,
                     validator: (value) {
@@ -166,10 +148,11 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                   ),
                 ),
                 SizedBox(height: 15),
+
+                // Field Widget to display Email Address
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: TextFormField(
-
                     initialValue: Fieldemail,
                     enableSuggestions: true,
                     validator: (value) {
@@ -208,10 +191,11 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                 SizedBox(height: 15),
               ]),
             ),
+
+            // Field Widget to display Hospital name
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
                 initialValue: Fieldhospitalname,
                 enableSuggestions: true,
                 validator: (value) {
@@ -247,10 +231,11 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
               ),
             ),
             SizedBox(height: 15),
+
+            // Field Widget to display Speciality
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
                 initialValue: Fieldspeciality,
                 enableSuggestions: true,
                 validator: (value) {
@@ -286,10 +271,11 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
               ),
             ),
             SizedBox(height: 15),
+
+            // Field Widget to display Degree
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
                 initialValue: Fielddegree,
                 enableSuggestions: true,
                 validator: (value) {
@@ -319,16 +305,15 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
-                onChanged: (value) {
-                  // Email = value;
-                },
+                onChanged: (value) {},
               ),
             ),
             SizedBox(height: 15),
+
+            // Field Widget to display Address
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
                 initialValue: Fieldaddress,
                 enableSuggestions: true,
                 validator: (value) {
@@ -358,16 +343,15 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
-                onChanged: (value) {
-                  // Email = value;
-                },
+                onChanged: (value) {},
               ),
             ),
             SizedBox(height: 15),
+
+            // Field Widget to display Contact Number
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
                 initialValue: Fieldcontactnumber.toString(),
                 enableSuggestions: true,
                 validator: (value) {
@@ -397,17 +381,15 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                   labelStyle: TextStyle(
                       fontSize: 20, color: Color.fromARGB(255, 111, 111, 111)),
                 ),
-                onChanged: (value) {
-                  // Email = value;
-                },
+                onChanged: (value) {},
               ),
             ),
             SizedBox(height: 15),
+
+            // Field Widget to display License Num.
             Container(
               width: MediaQuery.of(context).size.width,
               child: TextFormField(
-
-                // controller: Licensenumcontroller,
                 initialValue: Fieldlicensenum,
                 enableSuggestions: true,
                 validator: (value) {
@@ -439,8 +421,11 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
                 ),
               ),
             ),
-            SizedBox(height : 15),
-            Container(    height: 40,
+            SizedBox(height: 15),
+
+            // Widget to - Signout from current user and navigate to login screen.
+            Container(
+              height: 40,
               width: MediaQuery.of(context).size.width * 0.4,
               decoration: BoxDecoration(
                   color: Colors.blue,
@@ -448,9 +433,13 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
               child: TextButton(
                   onPressed: () async {
                     _signOut();
-                    await     Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+                    await Navigator.pushNamedAndRemoveUntil(
+                        context, 'login', (route) => false);
                   },
-                  child: Text("Signout",style: TextStyle(color: Colors.white),)),
+                  child: Text(
+                    "Signout",
+                    style: TextStyle(color: Colors.white),
+                  )),
             )
           ]),
         ),
@@ -458,12 +447,12 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
     );
   }
 
-// Stream<List<User>> readUsers() => FirebaseFirestore.instance.instance.collection('Doctor').snapshot .s().map((snapshot) => snapshot.docs.map((doc) => User.fromJson(doc.data())));
-
+  // Function to - call firebase Signout function
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 
+  // Function to - pick photo from galary
   Future getgalaryimage() async {
     try {
       var images = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -478,6 +467,7 @@ class _DoctorProfileFieldsState extends State<DoctorProfileFields> {
     }
   }
 
+  // Function to - pick photo from camera
   Future getcamimage() async {
     try {
       var images = await ImagePicker().pickImage(source: ImageSource.camera);

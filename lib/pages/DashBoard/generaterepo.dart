@@ -1,3 +1,6 @@
+// Following code is responsible to fetch all the respective data and build a
+// PDF as an Output.
+
 import 'dart:async';
 
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/getbpdata.dart';
@@ -18,6 +21,7 @@ class GenerateRepo extends StatefulWidget {
   State<GenerateRepo> createState() => _GenerateRepoState();
 }
 
+// Vaiables to define height of the Constraint Box according to data size.
 double sugarwidgetsnum = 0;
 double bpwidgetsnum = 0;
 double weightwidgetsnum = 0;
@@ -33,6 +37,8 @@ class _GenerateRepoState extends State<GenerateRepo> {
   var _globalkey = GlobalKey();
   late Timer _timer;
 
+//this function will reload the state every second.
+//it is required to update the widget height Constraint Box according to data size.
   @override
   void initState() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -43,6 +49,7 @@ class _GenerateRepoState extends State<GenerateRepo> {
 
   @override
   Widget build(BuildContext context) {
+    // Calculating total height of the page
     pagelenght = 500 +
         bpwidgetsnum! +
         weightwidgetsnum! +
@@ -71,28 +78,6 @@ class _GenerateRepoState extends State<GenerateRepo> {
               })
         ],
       ),
-      //     .then((capturedImage) {
-      //   // Handle captured image
-      // });
-
-      //             // final bytes = await controller.captureFromWidget(MaterialApp(
-      //             //     debugShowCheckedModeBanner: false,
-      //             //     home: GenerateRepo(pdfbuttonvalue: true)));
-      //             // setState(() {
-      //             //   this.bytes = bytes;
-      //             // });
-
-      //             await createpdf().catchError((e) {
-      //               print("Errorrr: $e");
-      //             });
-      //             await openpdf();
-
-      //             print("done");
-      //             pdfbutton = await false;
-      //             setState(() {});
-
-      //             // Page
-      //           }),
       body: SafeArea(
         child: SingleChildScrollView(
           child: RepaintBoundary(
@@ -582,7 +567,7 @@ class _GenerateRepoState extends State<GenerateRepo> {
                       child: getvaccinedata(),
                     ),
                   ),
-                if (vaccinewidgetsnum! > 2)
+                if (vaccinewidgetsnum > 2)
                   Divider(endIndent: 150, indent: 150, color: Colors.grey),
               ]),
             ),

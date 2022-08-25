@@ -357,7 +357,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                   if (value!.isEmpty) {
                                     return "Field can't be empty";
                                   }
-                                  if (value!.length > 3) {
+                                  if (value.length > 3) {
                                     return "Max input is 2 digit";
                                   }
 
@@ -421,7 +421,7 @@ class _AddMedicineState extends State<AddMedicine> {
                                     if (value!.isEmpty) {
                                       return "Field empty";
                                     }
-                                    if (value!.length > 2) {
+                                    if (value.length > 2) {
                                       return "Max input is 2 digit";
                                     }
 

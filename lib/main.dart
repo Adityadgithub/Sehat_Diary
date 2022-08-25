@@ -1,3 +1,9 @@
+// Following includes the main Function, root widget and routes for different widget.
+// This will be first called to start the application and navigate to different widgets.
+
+// TO_DO's :-
+// 1. customise insurance accroding to age
+
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -34,10 +40,24 @@ import 'package:firebasetut/pages/common/signup.dart';
 import 'package:firebasetut/pages/doctor/doctorprofilepage.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
 
+import 'package:firebasetut/pages/user/Insurance/child/child.dart';
+import 'package:firebasetut/pages/user/Insurance/family/family.dart';
+
+import 'package:firebasetut/pages/user/Insurance/health/health.dart';
+
+import 'package:firebasetut/pages/user/Insurance/insurance.dart';
+import 'package:firebasetut/pages/user/Insurance/life/life.dart';
+import 'package:firebasetut/pages/user/Insurance/medical/medical.dart';
+import 'package:firebasetut/pages/user/Insurance/parents/parents.dart';
+
+import 'package:firebasetut/pages/user/Insurance/term/term.dart';
+
 import 'package:firebasetut/pages/user/addmember/multipleprofile.dart';
 import 'package:firebasetut/pages/user/emergency/emergency.dart';
 import 'package:firebasetut/pages/user/emergency/managecontacts/addcontact.dart';
 import 'package:firebasetut/pages/user/emergency/managecontacts/contacts.dart';
+import 'package:firebasetut/pages/user/sehatgyan/playvideo.dart';
+import 'package:firebasetut/pages/user/sehatgyan/sehatgyan.dart';
 
 import 'package:firebasetut/pages/user/userprofilepage.dart';
 import 'package:firebasetut/pages/user/addmember/addmemsignupfields.dart';
@@ -45,11 +65,13 @@ import 'package:firebasetut/pages/user/usersignupfields.dart';
 import 'package:firebasetut/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 import 'select_title/Select_title.dart';
 
 void main() async {
   //Initializing Firebase
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -75,7 +97,7 @@ class _MyAppState extends State<MyApp> {
 
       //Naming routes to use in navigation
       routes: {
-        "/": (context) => Selecttitle(),
+        "/": (context) => SplashScreen(),
         "signup": (context) => SignUp(),
         "login": (context) => login(),
         "profilepage": (context) => doctorprofilepage(),
@@ -102,7 +124,7 @@ class _MyAppState extends State<MyApp> {
         "getweightdata": (context) => getweightdata(),
         "Medicine": (context) => Medicine(),
         "AddMedicine": (context) => AddMedicine(),
-        "getweightdata": (context) => getmedicinedata(),
+        "getmedicinedata": (context) => getmedicinedata(),
         "PnR": (context) => PNR(),
         "AddPnR": (context) => AddPnR(),
         "getpnrdata": (context) => getpnrdata(),
@@ -111,7 +133,15 @@ class _MyAppState extends State<MyApp> {
         "getheartdata": (context) => getheartdata(),
         "AddVaccine": (context) => AddVaccine(),
         "Vaccine": (context) => Vaccine(),
-        "getvaccinedata": (context) => getvaccinedata(),
+        "insurance": (context) => insurance(),
+        "Childinsurance": (context) => Childinsurance(),
+        "Healthinsurance": (context) => Healthinsurance(),
+        "Lifeinsurance": (context) => Lifeinsurance(),
+        "Familyinsurance": (context) => Familyinsurance(),
+        "Parentsinsurance": (context) => Parentsinsurance(),
+        "Medicalinsurance": (context) => Medicalinsurance(),
+        "Terminsurance": (context) => Terminsurance(),
+        "sehatgyan": (context) => SehatGyan(),
       },
     );
   }

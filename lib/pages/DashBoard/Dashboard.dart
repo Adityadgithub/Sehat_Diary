@@ -1,3 +1,6 @@
+// Following code is responsible to display a Dashboard page/screen and navigate
+// to different pages specified in respective sub/child widgets.
+
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,25 +36,41 @@ class _DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            // Back button
             leading: IconButton(
                 onPressed: () async {
+                  // If the user is not inside dashboard of any other user (family member)
+                  // then back button open either profile page or search patient page
+                  // according to current flow (login as).
                   if (familymempressed == false) {
+                    // If current flow is of User then it will open Profile page
                     if (doctoraccessgetusersehatid == null) {
                       await Navigator.pushNamed(context, 'Firebasecard');
                       return membername;
-                    } else {
+                    }
+
+                    // If current flow is of Doctor then it will open Search Patient page
+                    else {
                       membername = null;
                       await Navigator.pushReplacementNamed(
                           context, 'SearchPatient');
                       return membername;
                     }
-                  } else {
+                  }
+
+                  // If the user is inside dashboard of any other user (family member)
+                  // then back button open either Switch profile page or search patient page
+                  // according to current flow (login as).
+                  else {
+                    // If current flow is of User then it will open Switch profile page
                     if (doctoraccessgetusersehatid == null) {
                       membername = null;
                       await Navigator.pushReplacementNamed(
                           context, 'MultipleProfile');
                       return membername;
-                    } else {
+                    }
+                    // If current flow is of Doctor then it will open Search Patient page
+                    else {
                       membername = null;
                       await Navigator.pushReplacementNamed(
                           context, 'SearchPatient');
@@ -64,12 +83,17 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.blue,
                 )),
             actions: [
+              // This will detect device back button and will perform the same action
+              // as the back button in the appbar.
               WillPopScope(
                   child: Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
                   onWillPop: () async {
+                    // If the user is not inside dashboard of any other user (family member)
+                    // then back button open either profile page or search patient page
+                    // according to current flow (login as).
                     if (familymempressed == false) {
                       membername = null;
                       familymempressed = false;
@@ -80,9 +104,14 @@ class _DashboardState extends State<Dashboard> {
                       membername = null;
                       familymempressed = false;
                       await Navigator.pushReplacementNamed(
-                          context, 'Firebasecard');
+                          context, 'SearchPatient');
                       return membername;
-                    } else {
+                    }
+
+                    // If the user is inside dashboard of any other user (family member)
+                    // then back button open either Switch profile page or search patient page
+                    // according to current flow (login as).
+                    else {
                       if (doctoraccessgetusersehatid == null) {
                         membername = null;
                         await Navigator.pushReplacementNamed(
@@ -99,11 +128,15 @@ class _DashboardState extends State<Dashboard> {
             ],
             centerTitle: true,
             backgroundColor: Colors.white,
+
+            // Appbar Title
             title: Text(
               "Dashboard",
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
+
+          //Drawer
           drawer: familymempressed == false
               ? Drawerwidgets(
                   drawerimage: universalimagefordrawer,
@@ -116,6 +149,7 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //Following is the Field to display Sehat-Id of the specific user.
                   if (familymempressed == true && searchpatientpressed == false)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15.0),
@@ -158,12 +192,12 @@ class _DashboardState extends State<Dashboard> {
                                 fontSize: 20,
                                 color: Color.fromARGB(255, 111, 111, 111)),
                           ),
-                          onChanged: (value) {
-                            // Email = value;
-                          },
+                          onChanged: (value) {},
                         ),
                       ),
                     ),
+
+                  // Sub-title
                   Row(
                     children: [
                       Text(
@@ -172,6 +206,8 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
+
+                  // Button to open Sugar page
                   Column(
                     children: [
                       Padding(
@@ -221,6 +257,8 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(height: 50),
+
+                            // Button to open Weight page
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -265,6 +303,8 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(height: 50),
+
+                            // Button to open Heartrate page
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -319,6 +359,8 @@ class _DashboardState extends State<Dashboard> {
                               ],
                             ),
                             SizedBox(height: 50),
+
+                            // Button to open Vaccine page
                             TextButton(
                               onPressed: () {
                                 Navigator.pushNamed(context, "Vaccine");
@@ -343,6 +385,8 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
+
+                  // Button to open GenerateRepo page
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0),
                     child: Container(

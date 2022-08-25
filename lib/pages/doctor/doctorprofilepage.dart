@@ -1,3 +1,5 @@
+//Following code is responsible to fetch and display doctor's credentilas respectively.
+
 import 'dart:convert';
 import 'dart:ui';
 
@@ -74,7 +76,7 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
   });
 
   var MyName;
-
+  //Function to - Ensure Connection with Firebase, and support FutureBuilder.
   getData() async {
     final firebaseuser = await FirebaseAuth.instance.currentUser;
     if (firebaseuser != null) {
@@ -111,6 +113,7 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
           future: getData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              //This will Call the mentioned widget while sending all the values as Arguments.
               return DoctorProfileFields(
                   FieldImage: FieldImage,
                   FieldName: FieldName,
@@ -122,7 +125,10 @@ class _doctorprofilepageState extends State<doctorprofilepage> {
                   Fieldlicensenum: Fieldlicensenum,
                   Fieldpassword: Fieldpassword,
                   Fieldspeciality: Fieldspeciality);
-            } else {
+            }
+
+            //If the connection is not yet made then a progress indicator will be shown.
+            else {
               return Center(child: CircularProgressIndicator());
             }
           },
