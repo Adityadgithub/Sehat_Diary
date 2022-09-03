@@ -130,6 +130,30 @@ class _AddWeightState extends State<AddWeight> {
                 SizedBox(height: 15),
                 SizedBox(height: 15),
                 TextFormField(
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(3),
+                  ],
+                  validator: (value) {
+                    if (value!.contains(',')) {
+                      return "Invalid input, please enter numbers only.";
+                    }
+                    if (value!.contains('-')) {
+                      return "Invalid input, please enter numbers only.";
+                    }
+                    if (value!.contains(' ')) {
+                      return "Invalid input, please enter numbers only.";
+                    }
+                    if (value!.isEmpty) {
+                      return "Field can't be empty";
+                    }
+
+                    if (int.parse(value) < 50) {
+                      return "value should be under 50 - 130 bpm, try again";
+                    }
+                    if (int.parse(value) > 150) {
+                      return "value should be under 50 - 130 bpm, try again";
+                    }
+                  },
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {

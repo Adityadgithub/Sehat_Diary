@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -114,13 +115,13 @@ class _AddVaccineState extends State<AddVaccine> {
 
   DateTime date = DateTime.now();
 
-  late Timer _timer;
-
+  var controller;
+  bool opencam = false;
+  bool flash = false;
   var weight;
-
   var vaccinename = 'Hepatitis A';
   var _error;
-
+  late Timer _timer;
   @override
   void initState() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -172,6 +173,86 @@ class _AddVaccineState extends State<AddVaccine> {
 
   @override
   Widget build(BuildContext context) {
+    if (opencam == true) {
+      return SafeArea(
+          child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 170,
+            width: MediaQuery.of(context).size.width,
+            child: CameraPreview(controller),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 35.0, left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        certiimagedone = false;
+                        opencam = false;
+                      });
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: TextButton(
+                      onPressed: () async {
+                        var result = await controller.takePicture();
+                        setState(() {
+                          opencam = false;
+                        });
+                        await certicameraselectFile(result);
+                        certiimagedone = 1;
+                        opencam = false;
+                        setState(() {});
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              shape: BoxShape.circle),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.camera,
+                              size: 35,
+                            ),
+                          ))),
+                ),
+                if (flash == false)
+                  TextButton(
+                    onPressed: () {
+                      flash = true;
+                      controller.setFlashMode(FlashMode.always);
+                      setState(() {});
+                    },
+                    child: Icon(Icons.flashlight_on),
+                  ),
+                if (flash == true)
+                  TextButton(
+                    onPressed: () {
+                      flash = false;
+
+                      controller.setFlashMode(FlashMode.off);
+                      setState(() {});
+                    },
+                    child: Icon(Icons.flashlight_off),
+                  )
+              ],
+            ),
+          )
+        ],
+      ));
+    }
+
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -580,8 +661,39 @@ class _AddVaccineState extends State<AddVaccine> {
                                                         certiimagedone = 0;
                                                         Navigator.of(context)
                                                             .pop();
-                                                        await certicameraselectFile();
-                                                        certiimagedone = 1;
+                                                        List _cameras =
+                                                            await availableCameras();
+                                                        controller =
+                                                            CameraController(
+                                                                _cameras[0],
+                                                                ResolutionPreset
+                                                                    .max);
+
+                                                        controller
+                                                            .initialize()
+                                                            .then((_) {
+                                                          if (!mounted) {
+                                                            return;
+                                                          }
+                                                          setState(() {});
+                                                        }).catchError(
+                                                                (Object e) {
+                                                          if (e
+                                                              is CameraException) {
+                                                            switch (e.code) {
+                                                              case 'CameraAccessDenied':
+                                                                print(
+                                                                    'User denied camera access.');
+                                                                break;
+                                                              default:
+                                                                print(
+                                                                    'Handle other errors.');
+                                                                break;
+                                                            }
+                                                          }
+                                                        });
+
+                                                        opencam = true;
                                                       },
                                                       child: Text("Camera"),
                                                     ),
@@ -706,10 +818,10 @@ class _AddVaccineState extends State<AddVaccine> {
     }
   }
 
-  Future certicameraselectFile() async {
+  Future certicameraselectFile(result) async {
     // final result = await FilePicker.platform.pickFiles();
-    final result = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (result == null) return;
+    // final result = await ImagePicker().pickImage(source: ImageSource.camera);
+    // if (result == null) return;
 
     setState(() {
       certicameraimages = File(result.path);

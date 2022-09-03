@@ -197,12 +197,21 @@ class _AddSugarState extends State<AddSugar> {
                 Form(
                   key: formkey,
                   child: TextFormField(
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                    ],
                     validator: (value) {
+                      if (value!.contains(',')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
+                      if (value!.contains('-')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
+                      if (value!.contains(' ')) {
+                        return "Invalid input, please enter numbers only.";
+                      }
                       if (value!.isEmpty) {
                         return "Field can't be empty";
-                      }
-                      if (value!.length > 3) {
-                        return "value should be less than or equal to 3 digit";
                       }
 
                       if (int.parse(value) < 70) {
@@ -210,16 +219,6 @@ class _AddSugarState extends State<AddSugar> {
                       }
                       if (int.parse(value) > 200) {
                         return "value should be under 70 - 200 mg/dl, try again";
-                      }
-
-                      if (value.contains(',')) {
-                        return "Invalid input, please enter numbers only.";
-                      }
-                      if (value.contains('-')) {
-                        return "Invalid input, please enter numbers only.";
-                      }
-                      if (value.contains(' ')) {
-                        return "Invalid input, please enter numbers only.";
                       }
                     },
                     keyboardType: TextInputType.number,

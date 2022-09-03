@@ -1,3 +1,10 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:youtube_player_flutter_quill/youtube_player_flutter_quill.dart';
+
 // Following code is responsible to Display Videos and Blogs
 // related to health and fitness.
 
@@ -86,8 +93,16 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "s2NQhpFGIOg",
+                                //s2NQhpFGIOg
+                                child: InkWell(
+                                  onTap: () {
+                                    videoidd = "s2NQhpFGIOg";
+                                    Navigator.pushNamed(context, "PlayVideo");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/1.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -103,8 +118,17 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "zlpFb33f98I",
+                                // child: PlayVideo(
+                                //   videoid: "zlpFb33f98I",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "PlayVideo");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/2.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -120,23 +144,16 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(videoid: "TsplHc3n9kg")),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxHeight: 150),
-                            child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(11),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                    )),
-                                width: 180,
-                                child: PlayVideo(
-                                  videoid: "CR5krXHkr2I",
+                                // child: PlayVideo(videoid: "TsplHc3n9kg"),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/3.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -152,8 +169,45 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "krIgKr3IC7s",
+                                // child: PlayVideo(
+                                //   videoid: "CR5krXHkr2I",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/4.png"),
+                                  ),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxHeight: 150),
+                            child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(11),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                    )),
+                                width: 180,
+                                // child: PlayVideo(
+                                //   videoid: "krIgKr3IC7s",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/5.png"),
+                                  ),
                                 )),
                           ),
                         ],
@@ -186,7 +240,7 @@ class _SehatGyanState extends State<SehatGyan> {
                       child: Row(
                         children: [
                           ConstrainedBox(
-                            constraints: BoxConstraints(maxHeight: 150),
+                            constraints: BoxConstraints(maxHeight: 103),
                             child: Container(
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
@@ -195,8 +249,19 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "ejjA275HyiA",
+                                // child: PlayVideo(
+                                //   videoid: "3Xb3g6IPQkM",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    fit: BoxFit.fitWidth,
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/6.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -212,8 +277,44 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "8vAZrU9aOck",
+                                // child: PlayVideo(
+                                //   videoid: "8vAZrU9aOck",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/7.png"),
+                                  ),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxHeight: 103),
+                            child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(11),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                    )),
+                                width: 180,
+                                // child: PlayVideo(videoid: "9-8UN0cPCmQ"),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/8.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -229,23 +330,18 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(videoid: "9-8UN0cPCmQ")),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxHeight: 150),
-                            child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(11),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                    )),
-                                width: 180,
-                                child: PlayVideo(
-                                  videoid: "xQeX2YZTjLY",
+                                // child: PlayVideo(
+                                //   videoid: "xQeX2YZTjLY",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/9.png"),
+                                  ),
                                 )),
                           ),
                           SizedBox(
@@ -261,8 +357,18 @@ class _SehatGyanState extends State<SehatGyan> {
                                       color: Colors.black,
                                     )),
                                 width: 180,
-                                child: PlayVideo(
-                                  videoid: "XreA78in4oc",
+                                // child: PlayVideo(
+                                //   videoid: "XreA78in4oc",
+                                // ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, "Firebasecard");
+                                  },
+                                  child: Image(
+                                    image: AssetImage(
+                                        "assets/images/sehatgyan/thumbnails/10.png"),
+                                  ),
                                 )),
                           ),
                         ],

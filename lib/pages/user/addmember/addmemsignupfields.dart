@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
@@ -72,9 +73,91 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
   late Timer _timer;
 
   var membersehatid;
-
+  bool useropencam = false;
+  var controller;
+  bool flash = false;
   @override
   Widget build(BuildContext context) {
+    if (useropencam == true) {
+      return SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 170,
+              width: MediaQuery.of(context).size.width,
+              child: CameraPreview(controller),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 35.0, left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          profileimagedone = null;
+                          useropencam = false;
+                        });
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                        onPressed: () async {
+                          var result = await controller.takePicture();
+                          setState(() {
+                            useropencam = false;
+                          });
+                          await profilecameraselectFile(result);
+                          profileimagedone = 1;
+
+                          setState(() {});
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                shape: BoxShape.circle),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.camera,
+                                size: 35,
+                              ),
+                            ))),
+                  ),
+                  if (flash == false)
+                    TextButton(
+                      onPressed: () {
+                        flash = true;
+                        controller.setFlashMode(FlashMode.always);
+                        setState(() {});
+                      },
+                      child: Icon(Icons.flashlight_on),
+                    ),
+                  if (flash == true)
+                    TextButton(
+                      onPressed: () {
+                        flash = false;
+
+                        controller.setFlashMode(FlashMode.off);
+                        setState(() {});
+                      },
+                      child: Icon(Icons.flashlight_off),
+                    )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
     return Scaffold(
       drawerScrimColor: Colors.black,
       appBar: AppBar(
@@ -178,9 +261,33 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                                           setState(() {});
                                           profileimagedone = 0;
                                           Navigator.of(context).pop();
-                                          await profilecameraselectFile();
+                                          List _cameras =
+                                              await availableCameras();
+                                          controller = CameraController(
+                                              _cameras[0],
+                                              ResolutionPreset.max);
+
+                                          controller!.initialize().then((_) {
+                                            if (!mounted) {
+                                              return;
+                                            }
+                                            setState(() {});
+                                          }).catchError((Object e) {
+                                            if (e is CameraException) {
+                                              switch (e.code) {
+                                                case 'CameraAccessDenied':
+                                                  print(
+                                                      'User denied camera access.');
+                                                  break;
+                                                default:
+                                                  print('Handle other errors.');
+                                                  break;
+                                              }
+                                            }
+                                          });
                                           setState(() {});
-                                          profileimagedone = 1;
+                                          useropencam = true;
+                                          setState(() {});
                                         },
                                         child: Text("Camera"),
                                       ),
@@ -209,7 +316,58 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
                 child: TextFormField(
                   enableSuggestions: true,
                   validator: (value) {
-                    return null;
+                    if (value!.isEmpty) {
+                      return "Field can't be empty";
+                    }
+                    if (value.length > 20) {
+                      return "name should have less than or equal to 20 character";
+                    }
+
+                    if (value.length < 5) {
+                      return "name should have at least 5 character";
+                    }
+                    if (value.contains(',')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('-')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('@')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('#')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('<')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('>')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('?')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains(';')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains(':')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('/')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('=')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('(')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains(')')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
+                    if (value.contains('!')) {
+                      return "Invalid input, value can't contain {@#(),-;:=<>?!}";
+                    }
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -481,10 +639,10 @@ class _AddMemberSignuFieldsState extends State<AddMemberSignuFields> {
     });
   }
 
-  Future profilecameraselectFile() async {
+  Future profilecameraselectFile(result) async {
     // final result = await FilePicker.platform.pickFiles();
-    final result = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (result == null) return;
+    // final result = await ImagePicker().pickImage(source: ImageSource.camera);
+    // if (result == null) return;
 
     setState(() {
       profilecameraimages = File(result.path);

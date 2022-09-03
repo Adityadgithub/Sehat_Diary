@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
@@ -90,6 +91,15 @@ class _AddPnRState extends State<AddPnR> {
 
   var reporturlDownlad;
   var _error;
+  var controller;
+
+  bool opencam = false;
+
+  bool flash = false;
+
+  bool presupload = false;
+
+  bool repoupload = false;
 
   @override
   void initState() {
@@ -98,6 +108,7 @@ class _AddPnRState extends State<AddPnR> {
         date = DateTime.now();
       });
     });
+
     super.initState();
   }
 
@@ -147,6 +158,100 @@ class _AddPnRState extends State<AddPnR> {
 
   @override
   Widget build(BuildContext context) {
+    if (opencam == true) {
+      return SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 170,
+              width: MediaQuery.of(context).size.width,
+              child: CameraPreview(controller),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 35.0, left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          if (presupload == true) {
+                            presimagedone = null;
+                          }
+                          if (repoupload == true) {
+                            repoimagedone = null;
+                          }
+                          opencam = false;
+                        });
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                        onPressed: () async {
+                          var result = await controller.takePicture();
+                          setState(() {
+                            opencam = false;
+                          });
+                          if (presupload == true) {
+                            await prescameraselectFile(result);
+                            presimagedone = 1;
+                            presupload = false;
+                          }
+                          if (repoupload == true) {
+                            await reportcameraselectFile(result);
+                            repoimagedone = 1;
+                            repoupload = false;
+                          }
+
+                          setState(() {});
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                shape: BoxShape.circle),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.camera,
+                                size: 35,
+                              ),
+                            ))),
+                  ),
+                  if (flash == false)
+                    TextButton(
+                      onPressed: () {
+                        flash = true;
+                        controller.setFlashMode(FlashMode.always);
+                        setState(() {});
+                      },
+                      child: Icon(Icons.flashlight_on),
+                    ),
+                  if (flash == true)
+                    TextButton(
+                      onPressed: () {
+                        flash = false;
+
+                        controller.setFlashMode(FlashMode.off);
+                        setState(() {});
+                      },
+                      child: Icon(Icons.flashlight_off),
+                    )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -213,19 +318,18 @@ class _AddPnRState extends State<AddPnR> {
                             child: Column(
                               children: [
                                 TextFormField(
-                                  maxLength: 3,
                                   validator: (value) {
+                                    if (value!.contains(',')) {
+                                      return "Invalid input, please enter numbers only.";
+                                    }
+                                    if (value!.contains('-')) {
+                                      return "Invalid input, please enter numbers only.";
+                                    }
+                                    if (value!.contains(' ')) {
+                                      return "Invalid input, please enter numbers only.";
+                                    }
                                     if (value!.isEmpty) {
                                       return "Field can't be empty";
-                                    }
-                                    if (value.contains(',')) {
-                                      return "Invalid input, please enter numbers only.";
-                                    }
-                                    if (value.contains('-')) {
-                                      return "Invalid input, please enter numbers only.";
-                                    }
-                                    if (value.contains(' ')) {
-                                      return "Invalid input, please enter numbers only.";
                                     }
                                   },
                                   onChanged: (value) {
@@ -264,16 +368,25 @@ class _AddPnRState extends State<AddPnR> {
                                 ),
                                 SizedBox(height: 15),
                                 TextFormField(
-                                  maxLength: 3,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(10),
+                                  ],
                                   validator: (value) {
                                     if (value!.contains(',')) {
-                                      return "Invalid input, please enter numbers only.";
+                                      return "Invalid input.";
                                     }
                                     if (value!.contains('-')) {
-                                      return "Invalid input, please enter numbers only.";
+                                      return "Invalid input.";
                                     }
                                     if (value!.contains(' ')) {
-                                      return "Invalid input, please enter numbers only.";
+                                      return "Invalid input.";
+                                    }
+                                    if (value!.isEmpty) {
+                                      return "Field can't be empty";
+                                    }
+
+                                    if (int.parse(value) < 0) {
+                                      return "value can't be 0";
                                     }
                                   },
                                   keyboardType: TextInputType.number,
@@ -440,8 +553,41 @@ class _AddPnRState extends State<AddPnR> {
                                                           presimagedone = 0;
                                                           Navigator.of(context)
                                                               .pop();
-                                                          await prescameraselectFile();
-                                                          presimagedone = 1;
+                                                          // await prescameraselectFile();
+                                                          //prescription
+                                                          List _cameras =
+                                                              await availableCameras();
+                                                          controller =
+                                                              CameraController(
+                                                                  _cameras[0],
+                                                                  ResolutionPreset
+                                                                      .max);
+
+                                                          controller
+                                                              .initialize()
+                                                              .then((_) {
+                                                            if (!mounted) {
+                                                              return;
+                                                            }
+                                                            setState(() {});
+                                                          }).catchError(
+                                                                  (Object e) {
+                                                            if (e
+                                                                is CameraException) {
+                                                              switch (e.code) {
+                                                                case 'CameraAccessDenied':
+                                                                  print(
+                                                                      'User denied camera access.');
+                                                                  break;
+                                                                default:
+                                                                  print(
+                                                                      'Handle other errors.');
+                                                                  break;
+                                                              }
+                                                            }
+                                                          });
+                                                          presupload = true;
+                                                          opencam = true;
                                                         },
                                                         child: Text("Camera"),
                                                       ),
@@ -458,7 +604,10 @@ class _AddPnRState extends State<AddPnR> {
                                   Row(
                                     children: [
                                       SizedBox(width: 23),
-                                      Text('Uploading, please wait...')
+                                      SizedBox(
+                                          width: 108,
+                                          child:
+                                              Text('Uploading, please wait...'))
                                     ],
                                   ),
                                 if (presimagedone == 1)
@@ -579,8 +728,42 @@ class _AddPnRState extends State<AddPnR> {
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
-                                                            await reportcameraselectFile();
-                                                            repoimagedone = 1;
+                                                            // await reportcameraselectFile();
+
+                                                            List _cameras =
+                                                                await availableCameras();
+                                                            controller =
+                                                                CameraController(
+                                                                    _cameras[0],
+                                                                    ResolutionPreset
+                                                                        .max);
+
+                                                            controller
+                                                                .initialize()
+                                                                .then((_) {
+                                                              if (!mounted) {
+                                                                return;
+                                                              }
+                                                              setState(() {});
+                                                            }).catchError(
+                                                                    (Object e) {
+                                                              if (e
+                                                                  is CameraException) {
+                                                                switch (
+                                                                    e.code) {
+                                                                  case 'CameraAccessDenied':
+                                                                    print(
+                                                                        'User denied camera access.');
+                                                                    break;
+                                                                  default:
+                                                                    print(
+                                                                        'Handle other errors.');
+                                                                    break;
+                                                                }
+                                                              }
+                                                            });
+                                                            repoupload = true;
+                                                            opencam = true;
                                                           },
                                                           child: Text("Camera"),
                                                         ),
@@ -597,7 +780,10 @@ class _AddPnRState extends State<AddPnR> {
                                   Row(
                                     children: [
                                       SizedBox(width: 23),
-                                      Text('Uploading, please wait...')
+                                      SizedBox(
+                                          width: 108,
+                                          child:
+                                              Text('Uploading, please wait...'))
                                     ],
                                   ),
 
@@ -701,10 +887,10 @@ class _AddPnRState extends State<AddPnR> {
   //   }
   // }
 
-  Future prescameraselectFile() async {
+  Future prescameraselectFile(result) async {
     // final result = await FilePicker.platform.pickFiles();
-    final result = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (result == null) return;
+    // final result = await ImagePicker().pickImage(source: ImageSource.camera);
+    // if (result == null) return;
 
     setState(() {
       prescameraimages = File(result.path);
@@ -783,11 +969,11 @@ class _AddPnRState extends State<AddPnR> {
     }
   }
 
-  Future reportcameraselectFile() async {
+  Future reportcameraselectFile(result) async {
     // final result = await FilePicker.platform.pickFiles();
-    final result = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (result == null) return;
-
+    // final result = await ImagePicker().pickImage(source: ImageSource.camera);
+    // if (result == null) return;
+    print("Report started");
     setState(() {
       reportcameraimages = File(result.path);
     });

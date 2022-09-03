@@ -353,26 +353,25 @@ class _AddMedicineState extends State<AddMedicine> {
                             SizedBox(
                               width: 155,
                               child: TextFormField(
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(3),
+                                ],
                                 validator: (value) {
+                                  if (value!.contains(',')) {
+                                    return "Invalid input.";
+                                  }
+                                  if (value!.contains('-')) {
+                                    return "Invalid input.";
+                                  }
+                                  if (value!.contains(' ')) {
+                                    return "Invalid input.";
+                                  }
                                   if (value!.isEmpty) {
                                     return "Field can't be empty";
-                                  }
-                                  if (value.length > 3) {
-                                    return "Max input is 2 digit";
                                   }
 
                                   if (int.parse(value) < 0) {
                                     return "value can't be 0";
-                                  }
-
-                                  if (value.contains(',')) {
-                                    return "Invalid input.";
-                                  }
-                                  if (value.contains('-')) {
-                                    return "Invalid input.";
-                                  }
-                                  if (value.contains(' ')) {
-                                    return "Invalid input.";
                                   }
                                 },
                                 keyboardType: TextInputType.number,
@@ -417,12 +416,12 @@ class _AddMedicineState extends State<AddMedicine> {
                               child: SizedBox(
                                 width: 125,
                                 child: TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(3),
+                                  ],
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return "Field empty";
-                                    }
-                                    if (value.length > 2) {
-                                      return "Max input is 2 digit";
                                     }
 
                                     if (int.parse(value) <= 0) {

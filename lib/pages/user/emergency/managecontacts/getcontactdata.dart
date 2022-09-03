@@ -19,11 +19,11 @@ class getcontactdata extends StatefulWidget {
   const getcontactdata({Key? key}) : super(key: key);
 
   @override
-  State<getcontactdata> createState() => _getcontactdataState();
+  State<getcontactdata> createState() => getcontactdataState();
 }
 
-class _getcontactdataState extends State<getcontactdata> {
-  var nametest;
+class getcontactdataState extends State<getcontactdata> {
+  var contacttest;
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +41,19 @@ class _getcontactdataState extends State<getcontactdata> {
           final services = snapshot.data!.docs;
           List<Widget> servicesWidget = [];
           recipents = [];
+          contacttest = recipents;
           for (var st in services) {
             final _contactname =
                 (st.data()! as Map<String, dynamic>)['contactname'];
             final _contactnum =
                 (st.data()! as Map<String, dynamic>)['contactnum'];
 
-            nametest = _contactname;
+            contacttest = _contactname;
             final datas = buildTile(_contactname, _contactnum);
             servicesWidget.add(datas);
             recipents.add(_contactnum);
           }
-          if (nametest == null)
+          if (contacttest == null)
             return Center(child: Text("Click Add (+) to add SOS contacts."));
           return ListView(
             clipBehavior: Clip.none,

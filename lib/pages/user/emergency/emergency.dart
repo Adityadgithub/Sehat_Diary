@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/user/emergency/managecontacts/getcontactdata.dart';
 
 import 'package:firebasetut/pages/user/userprofilefields.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _EmergencyState extends State<Emergency> {
   Timer? _timer;
   Position? position;
   bool cooldownover = false;
+
+  bool error = false;
 
   //Function to - Send Sms with all credentials.
   Future _sendSMS(String message, List<String> recipents) async {
@@ -58,6 +61,7 @@ class _EmergencyState extends State<Emergency> {
         //back button
         leading: IconButton(
           onPressed: () {
+            Emergencypressed = false;
             Navigator.pushNamed(context, 'Firebasecard');
           },
           icon: Icon(
@@ -71,6 +75,21 @@ class _EmergencyState extends State<Emergency> {
         backgroundColor: Colors.white,
         title: Text("Emergency",
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+        actions: [
+          // This will detect device back button and will perform the same action
+          // as the back button in the appbar.
+          WillPopScope(
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onWillPop: () async {
+                Emergencypressed = false;
+                error = false;
+                Navigator.pushNamed(context, 'Firebasecard');
+                return error;
+              })
+        ],
       ),
       body: Center(
         child: Row(
@@ -99,6 +118,32 @@ class _EmergencyState extends State<Emergency> {
                           ),
                         )
                       ]),
+
+                if (error == true)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        color: Colors.amberAccent,
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(Icons.error_outline_outlined),
+                            ),
+                            Container(
+                                width: MediaQuery.of(context).size.width - 100,
+                                child: Text("No contact found")),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 0, maxWidth: 0),
+                    child: getcontactdata()),
 
                 // Text Widget. will display if SOS is active or inactive respectively.
                 Padding(
@@ -133,26 +178,34 @@ class _EmergencyState extends State<Emergency> {
                         if (Emergencypressed == false)
                           TextButton(
                               onPressed: () async {
-                                // Updating variables and state.
-                                setState(() {
-                                  cooldownover = false;
-                                  Emergencypressed = true;
-                                });
+                                print(
+                                    "Here : ${getcontactdataState().contacttest}");
+                                if (recipents.length > 0) {
+                                  // Updating variables and state.
+                                  setState(() {
+                                    cooldownover = false;
+                                    Emergencypressed = true;
+                                  });
 
-                                // function call to get location
-                                await getlocation();
+                                  // function call to get location
+                                  await getlocation();
 
-                                print('MCC $recipents');
+                                  print('MCC $recipents');
 
-                                //Message to send
-                                String message = '''HELP! IT'S AN EMERGENCY
+                                  //Message to send
+                                  String message = '''HELP! IT'S AN EMERGENCY
 Please contact to Mr. $universalnamefordrawer, they need help ASAP.
 
 their contact number : +91$universalcontactnumber
 Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.longitude}
 ''';
-                                // function call to send message
-                                await _sendSMS(message, recipents);
+                                  // function call to send message
+                                  await _sendSMS(message, recipents);
+                                } else {
+                                  setState(() {
+                                    error = true;
+                                  });
+                                }
                               },
                               style: ButtonStyle(
                                   shape: MaterialStateProperty.all<
@@ -244,6 +297,7 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
                           TextButton(
                             onPressed: () {
                               setState(() {
+                                error = false;
                                 Emergencypressed = false;
                               });
                             },
@@ -346,5 +400,29 @@ Location : https://maps.google.com/maps?q=loc:${position!.latitude},${position!.
         ),
       ),
     ));
+  }
+
+  Widget showAlert() {
+    if (error == true) {
+      return Container(
+        color: Colors.amberAccent,
+        width: double.infinity,
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.error_outline_outlined),
+            ),
+            Container(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Text("No contact found")),
+          ],
+        ),
+      );
+    }
+    return SizedBox(
+      height: 0,
+    );
   }
 }

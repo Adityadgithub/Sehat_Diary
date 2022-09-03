@@ -37,14 +37,8 @@ class _loginState extends State<login> {
 
   //Error validation
   bool validator() {
-    if (_error == null) {
-      if (formkey.currentState!.validate()) {
-        return true;
-      }
-    } else {
-      setState(() {
-        _erroris = true;
-      });
+    if (formkey.currentState!.validate()) {
+      return true;
     }
     return false;
   }
@@ -59,7 +53,6 @@ class _loginState extends State<login> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              showAlert(),
               Container(
                 child: Form(
                   key: formkey,
@@ -272,7 +265,12 @@ class _loginState extends State<login> {
                                               .signInWithEmailAndPassword(
                                                   email: Email,
                                                   password: password)
-                                              .then((value) {
+                                              .catchError((e) {
+                                            setState(() {
+                                              _error = e.message;
+                                              _erroris = true;
+                                            });
+                                          }).then((value) {
                                             loginpressed = true;
 
                                             Navigator.pushReplacementNamed(
@@ -281,6 +279,7 @@ class _loginState extends State<login> {
                                         } on FirebaseAuthException catch (e) {
                                           setState(() {
                                             _error = e.message;
+                                            _erroris = true;
                                           });
                                           print(e);
                                         }
@@ -308,8 +307,11 @@ class _loginState extends State<login> {
                             SizedBox(),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, "signup");
+                                loginas == 'User'
+                                    ? Navigator.pushNamed(
+                                        context, "UserSignupFields")
+                                    : Navigator.pushNamed(
+                                        context, "DoctorSignupFields");
                               },
                               child: Text("SIGN UP",
                                   style: TextStyle(
@@ -331,10 +333,10 @@ class _loginState extends State<login> {
 
   //Error Showing Widget
   Widget showAlert() {
-    if (_erroris == true) {
+    if (_error != null) {
       return Container(
         color: Colors.amberAccent,
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(8),
         child: Row(
           children: [
@@ -342,7 +344,9 @@ class _loginState extends State<login> {
               padding: const EdgeInsets.all(8.0),
               child: Icon(Icons.error_outline_outlined),
             ),
-            Text("$_error"),
+            Container(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Text("$_error")),
           ],
         ),
       );

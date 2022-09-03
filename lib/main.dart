@@ -3,10 +3,15 @@
 
 // TO_DO's :-
 // 1. customise insurance accroding to age
+// 2. building pdf
+// 3. validation in add member page
 
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebasetut/pages/DashBoard/Allergies/Add_Allergies.dart';
+import 'package:firebasetut/pages/DashBoard/Allergies/Allergy.dart';
+import 'package:firebasetut/pages/DashBoard/Allergies/getallergiesdata.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/AddBp.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/BloodPressure.dart';
 import 'package:firebasetut/pages/DashBoard/Blood%20Pressure/getbpdata.dart';
@@ -33,12 +38,17 @@ import 'package:firebasetut/pages/DashBoard/Weight/Weight.dart';
 import 'package:firebasetut/pages/DashBoard/Weight/getweightdata.dart';
 import 'package:firebasetut/pages/DashBoard/generaterepo.dart';
 import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
+import 'package:firebasetut/pages/common/camerawidget.dart';
 
 import 'package:firebasetut/pages/common/login.dart';
 import 'package:firebasetut/pages/common/signup.dart';
 
 import 'package:firebasetut/pages/doctor/doctorprofilepage.dart';
+import 'package:firebasetut/pages/doctor/doctorsignupfields.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
+import 'package:firebasetut/pages/user/Blood%20Donation/AddBdreq.dart';
+import 'package:firebasetut/pages/user/Blood%20Donation/blooddonation.dart';
+import 'package:firebasetut/pages/user/Blood%20Donation/getbdreqdata.dart';
 
 import 'package:firebasetut/pages/user/Insurance/child/child.dart';
 import 'package:firebasetut/pages/user/Insurance/family/family.dart';
@@ -58,6 +68,7 @@ import 'package:firebasetut/pages/user/emergency/managecontacts/addcontact.dart'
 import 'package:firebasetut/pages/user/emergency/managecontacts/contacts.dart';
 import 'package:firebasetut/pages/user/sehatgyan/playvideo.dart';
 import 'package:firebasetut/pages/user/sehatgyan/sehatgyan.dart';
+import 'package:firebasetut/pages/user/sehatgyan/videoscreen.dart';
 
 import 'package:firebasetut/pages/user/userprofilepage.dart';
 import 'package:firebasetut/pages/user/addmember/addmemsignupfields.dart';
@@ -108,6 +119,7 @@ class _MyAppState extends State<MyApp> {
         "Firebasecard": (context) => Firebasecard(),
         "UserProfilePage": (context) => UserProfilePage(),
         "UserSignupFields": (context) => UserSignupFields(),
+        "DoctorSignupFields": (context) => DoctorSignupFields(),
         "MultipleProfile": (context) => MultipleProfile(),
         "AddMemberSignuFields": (context) => AddMemberSignuFields(),
         "Selecttitle": (context) => Selecttitle(),
@@ -133,6 +145,16 @@ class _MyAppState extends State<MyApp> {
         "getheartdata": (context) => getheartdata(),
         "AddVaccine": (context) => AddVaccine(),
         "Vaccine": (context) => Vaccine(),
+        "getvaccinedata": (context) => getvaccinedata(),
+
+        "AddAllergy": (context) => AddAllergy(),
+        "Allergy": (context) => Allergy(),
+        "getallergydata": (context) => getallergydata(),
+
+        "AddBd": (context) => AddBd(),
+        "BloodDonation": (context) => BloodDonation(),
+        "getbddata": (context) => getbddata(),
+
         "insurance": (context) => insurance(),
         "Childinsurance": (context) => Childinsurance(),
         "Healthinsurance": (context) => Healthinsurance(),
@@ -142,6 +164,8 @@ class _MyAppState extends State<MyApp> {
         "Medicalinsurance": (context) => Medicalinsurance(),
         "Terminsurance": (context) => Terminsurance(),
         "sehatgyan": (context) => SehatGyan(),
+        "PlayVideo": (context) => PlayVideo(),
+        // "CameraWidget": (context) => CameraWidget()
       },
     );
   }

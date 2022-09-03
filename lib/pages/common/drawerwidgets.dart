@@ -31,7 +31,6 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              //
               Container(
                   alignment: Alignment.bottomLeft,
                   width: MediaQuery.of(context).size.width,
@@ -272,6 +271,30 @@ class _DrawerwidgetsState extends State<Drawerwidgets> {
                             width: 15,
                           ),
                           Text("Sehat Gyan",
+                              style: TextStyle(color: Colors.black))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              if (loginas == 'User')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                    bottom: 20,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'BloodDonation');
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Icon(Icons.bloodtype, color: Colors.black),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Blood Donation",
                               style: TextStyle(color: Colors.black))
                         ],
                       ),

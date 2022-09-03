@@ -361,24 +361,48 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(height: 50),
 
                             // Button to open Vaccine page
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, "Vaccine");
-                              },
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage("assets/images/vaccine.png"),
-                                    radius: 50,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Vaccine");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/vaccine.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Vaccine",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    "Vaccine",
-                                    style: TextStyle(color: Colors.black),
-                                  )
-                                ],
-                              ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "Allergy");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/vaccine.png"),
+                                        radius: 50,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Allergy",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
