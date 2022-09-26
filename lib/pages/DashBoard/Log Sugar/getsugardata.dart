@@ -13,7 +13,9 @@ import 'package:firebasetut/pages/common/profilecard.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
 
 import 'package:firebasetut/pages/user/addmember/multipleprofile.dart';
+import 'package:firebasetut/pages/user/analytics/analytics.dart';
 import 'package:firebasetut/select_title/Select_title.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class getsugardata extends StatefulWidget {
@@ -66,6 +68,7 @@ class _getsugardataState extends State<getsugardata> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
+          spotlist = [];
           List<Widget> servicesWidget = [];
           for (var st in services) {
             final _sugarlvl =
@@ -73,10 +76,15 @@ class _getsugardataState extends State<getsugardata> {
             final _date = (st.data()! as Map<String, dynamic>)['Date'];
             final _time = (st.data()! as Map<String, dynamic>)['Time'];
             final _event = (st.data()! as Map<String, dynamic>)['Event'];
+            final _month = (st.data()! as Map<String, dynamic>)['month'];
 
             nametest = _sugarlvl;
             final datas = buildTile(_sugarlvl, _date, _time, _event, context);
             servicesWidget.add(datas);
+            spotlist!.add(
+              FlSpot(int.parse(_month).toDouble(),
+                  int.parse(_sugarlvl).toDouble()),
+            );
           }
           double rows = servicesWidget.length / 2;
           if (servicesWidget.length != 0 &&

@@ -12,18 +12,19 @@ import 'package:firebasetut/pages/Firebase/FirebaseloginData.dart';
 import 'package:firebasetut/pages/common/profilecard.dart';
 import 'package:firebasetut/pages/doctor/searchpatient/searchpatient.dart';
 import 'package:firebasetut/pages/user/Blood%20Donation/bdcard.dart';
+import 'package:firebasetut/pages/user/Blood%20Donation/donatedcard.dart';
 
 import 'package:firebasetut/select_title/Select_title.dart';
 import 'package:flutter/material.dart';
 
-class getbddata extends StatefulWidget {
-  const getbddata({Key? key}) : super(key: key);
+class getdonated extends StatefulWidget {
+  const getdonated({Key? key}) : super(key: key);
 
   @override
-  State<getbddata> createState() => _getbddataState();
+  State<getdonated> createState() => _getdonatedState();
 }
 
-class _getbddataState extends State<getbddata> {
+class _getdonatedState extends State<getdonated> {
   var nulltest;
   var mainboard = doctoraccessgetusersehatid == null
       ? FirebaseFirestore.instance.collection('Blood Donation')
@@ -36,8 +37,11 @@ class _getbddataState extends State<getbddata> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-      stream:
-          FirebaseFirestore.instance.collection('Blood Donation').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('Blood Donation')
+          .doc('path')
+          .collection('donation')
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final services = snapshot.data!.docs;
@@ -53,11 +57,10 @@ class _getbddataState extends State<getbddata> {
                 (st.data()! as Map<String, dynamic>)['Patient Age'];
             final _bloodgrp =
                 (st.data()! as Map<String, dynamic>)['Blood Group'];
-            final _liter = (st.data()! as Map<String, dynamic>)['Liter'];
-            final _requireddate =
-                (st.data()! as Map<String, dynamic>)['Required Date'];
-            final _locationtype =
-                (st.data()! as Map<String, dynamic>)['Location Type'];
+            // final _liter = (st.data()! as Map<String, dynamic>)['Liter'];
+            // final _requireddate =
+            //     (st.data()! as Map<String, dynamic>)['Required Date'];
+
             final _address = (st.data()! as Map<String, dynamic>)['Address'];
 
             nulltest = _date;
@@ -67,10 +70,10 @@ class _getbddataState extends State<getbddata> {
               patientcontact: _patientcontact,
               patientage: _patientage,
               bloodgrp: _bloodgrp,
-              liter: _liter,
+
               address: _address,
-              requireddate: _requireddate,
-              locationtype: _locationtype,
+              // requireddate: _requireddate,
+              // locationtype: _locationtype,
               date: _date,
               time: _time,
             );
@@ -128,9 +131,6 @@ class _getbddataState extends State<getbddata> {
     patientage,
     bloodgrp,
     address,
-    liter,
-    requireddate,
-    locationtype,
     date,
     time,
   }) {
@@ -142,15 +142,12 @@ class _getbddataState extends State<getbddata> {
     //   time: time,
     // );
     if (generaterepo == false) {
-      return bdcard(
+      return donatedcard(
         address: address,
         bloodgrp: bloodgrp,
-        liter: liter,
-        locationtype: locationtype,
         patientage: patientage,
         patientcontact: patientcontact,
         patientname: patientname,
-        requireddate: requireddate,
         time: time,
         date: date,
       );

@@ -68,13 +68,6 @@ class _AddBdState extends State<AddBd> {
     super.dispose();
   }
 
-  var mainboard = doctoraccessgetusersehatid == null
-      ? FirebaseFirestore.instance.collection('Blood Donation')
-      : FirebaseFirestore.instance.collection('Blood Donation');
-
-  var family = doctoraccessgetusersehatid == null
-      ? FirebaseFirestore.instance.collection('Blood Donation')
-      : FirebaseFirestore.instance.collection('Blood Donation');
   bool validator() {
     if (formkey.currentState!.validate()) {
       return true;
@@ -634,36 +627,21 @@ class _AddBdState extends State<AddBd> {
 
                             if (validator()) {
                               try {
-                                final result = familymempressed == true
-                                    ? family.add({
-                                        'Date':
-                                            '${date.year}/${date.month}/${date.day}',
-                                        'Time': '${date.hour}:${date.minute}',
-                                        'Patient Name': patientname,
-                                        'Patient contact': patientcontact,
-                                        'Patient Age': patientage,
-                                        'Blood Group': bloodselecteditem,
-                                        'Liter': liter,
-                                        'Required Date': ReqDate,
-                                        'Location Type':
-                                            locationtypeselecteditem,
-                                        'Address': address,
-                                      }).then((value) => Navigator.pushNamed(
-                                        context, "BloodDonation"))
-                                    : mainboard.add({
-                                        'Date':
-                                            '${date.year}/${date.month}/${date.day}',
-                                        'Time': '${date.hour}:${date.minute}',
-                                        'Patient Name': patientname,
-                                        'Patient contact': patientcontact,
-                                        'Patient Age': patientage,
-                                        'Blood Group': bloodselecteditem,
-                                        'Liter': liter,
-                                        'Required Date': ReqDate,
-                                        'Location Type':
-                                            locationtypeselecteditem,
-                                        'Address': address,
-                                      }).then((value) => Navigator.pushNamed(
+                                final result = FirebaseFirestore.instance
+                                    .collection('Blood Donation')
+                                    .add({
+                                  'Date':
+                                      '${date.year}/${date.month}/${date.day}',
+                                  'Time': '${date.hour}:${date.minute}',
+                                  'Patient Name': patientname,
+                                  'Patient contact': patientcontact,
+                                  'Patient Age': patientage,
+                                  'Blood Group': bloodselecteditem,
+                                  'Liter': liter,
+                                  'Required Date': ReqDate,
+                                  'Location Type': locationtypeselecteditem,
+                                  'Address': address,
+                                }).then((value) => Navigator.pushNamed(
                                         context, "BloodDonation"));
                               } on FirebaseAuthException catch (e) {
                                 print(e);

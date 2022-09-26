@@ -1,4 +1,6 @@
 import 'package:firebasetut/pages/DashBoard/Log%20Sugar/getsugardata.dart';
+import 'package:firebasetut/pages/user/analytics/analices.dart';
+import 'package:firebasetut/pages/user/analytics/analytics.dart';
 
 import 'package:flutter/material.dart';
 
@@ -57,9 +59,10 @@ class _SugarState extends State<Sugar> {
                 ),
               ),
               SizedBox(
-                height: 25,
+                height: 45,
               ),
-              Container(child: Expanded(child: getsugardata())),
+              Expanded(child: LineChartWidget()),
+              Expanded(child: getsugardata()),
             ],
           ),
         ),

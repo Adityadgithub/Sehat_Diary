@@ -63,6 +63,7 @@ import 'package:firebasetut/pages/user/Insurance/parents/parents.dart';
 import 'package:firebasetut/pages/user/Insurance/term/term.dart';
 
 import 'package:firebasetut/pages/user/addmember/multipleprofile.dart';
+import 'package:firebasetut/pages/user/analytics/analytics.dart';
 import 'package:firebasetut/pages/user/emergency/emergency.dart';
 import 'package:firebasetut/pages/user/emergency/managecontacts/addcontact.dart';
 import 'package:firebasetut/pages/user/emergency/managecontacts/contacts.dart';
@@ -165,6 +166,7 @@ class _MyAppState extends State<MyApp> {
         "Terminsurance": (context) => Terminsurance(),
         "sehatgyan": (context) => SehatGyan(),
         "PlayVideo": (context) => PlayVideo(),
+        "LineChartWidget": (context) => LineChartWidget()
         // "CameraWidget": (context) => CameraWidget()
       },
     );

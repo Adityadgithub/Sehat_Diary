@@ -281,6 +281,7 @@ class _AddSugarState extends State<AddSugar> {
                                       'Time': '${date.hour}:${date.minute}',
                                       'Event': eventselecteditem,
                                       'Sugar Level': sugarlvl,
+                                      'month': '${date.month}'
                                       // 'Dob': date,
                                       // userid = result;
                                     }).then((value) =>
